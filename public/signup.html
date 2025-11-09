@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Communication Assessment Suite</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <link rel="stylesheet" href="auth-styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <div class="brand">Skill Tesseract</div>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+            </nav>
+        </div>
+
+        <!-- Signup Form -->
+        <main class="page-band">
+            <div class="auth-form">
+                <h2>Sign up</h2>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                        <div class="error-message" id="email-error"></div>
+                        <div class="success-message" id="email-success"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required minlength="3" maxlength="30" pattern="[a-zA-Z0-9_]+">
+                        <div class="error-message" id="username-error"></div>
+                        <div class="success-message" id="username-success"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                        <div class="password-strength" id="password-strength" style="display: none;">
+                            <div class="strength-meter">
+                                <div class="strength-fill" id="strength-fill"></div>
+                            </div>
+                            <div class="strength-text" id="strength-text"></div>
+                        </div>
+                        <div class="error-message" id="password-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        <div class="error-message" id="confirmPassword-error"></div>
+                        <div class="success-message" id="confirmPassword-success"></div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" id="signup-btn" disabled>
+                            <span class="btn-text">Create Account</span>
+                            <div class="loading" id="signup-loading">
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="form-links">
+                        <p>Already have an account? <a href="/login">Sign in</a></p>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <!-- Email Verification Notice -->
+        <div class="auth-form" id="verification-notice" style="display: none;">
+            <div class="verify-card">
+                <div class="verify-icon icon-circle success" aria-hidden="true">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L12 13L8 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 10V16C21 17.657 19.657 19 18 19H6C4.343 19 3 17.657 3 16V8C3 6.343 4.343 5 6 5H14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+                    </svg>
+                </div>
+                <h2 class="verify-title">Check your inbox</h2>
+                <p class="verify-desc">
+                    We sent a verification link to
+                    <span class="verify-email" id="user-email"></span>.
+                    Click the link to activate your account.
+                </p>
+                <ul class="verify-steps">
+                    <li>Open your email app or go to your inbox</li>
+                    <li>Find the email from <strong>Communication Assessment Suite</strong></li>
+                    <li>Tap the <strong>Verify Email</strong> button in the message</li>
+                </ul>
+
+                <div class="verify-resend">
+                    <p class="muted">Didn't receive the email?</p>
+                    <button type="button" class="btn btn-primary" id="resend-btn">
+                        <span class="btn-text">Resend email</span>
+                        <div class="loading" id="resend-loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
+                    <div class="cooldown" id="resend-cooldown" style="display: none;">You can resend again in <span id="cooldown-seconds">30</span>s</div>
+                </div>
+
+                <div class="verify-actions">
+                    <a href="/login" class="btn btn-secondary">Go to Login</a>
+                    <a href="/" class="btn btn-secondary">Back to Home</a>
+                </div>
+
+                <div class="verify-tips">
+                    <p>Tip: Check your spam/junk folder, or search for "Verify Your Email - Communication Assessment Suite".</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-inner">
+                <div class="footer-brand"><small>&copy; 2025 Skill Tesseract</small></div>
+                <nav class="footer-links" aria-label="Footer">
+                    <a href="/contact" class="footer-link">Contact us</a>
+                    <a href="mailto:mockinterview014@gmail.com" class="footer-link">Email</a>
+                    <a href="https://www.linkedin.com/company/skill-tesseract/?viewAsMember=true" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+                    <a href="https://www.instagram.com/skilltesseract" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Container -->
+    <div id="message-container" class="message-container" style="display: none;">
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const signupForm = document.getElementById('signup-form');
+            const signupBtn = document.getElementById('signup-btn');
+            const signupLoading = document.getElementById('signup-loading');
+            const btnText = document.querySelector('.btn-text');
+            const verificationNotice = document.getElementById('verification-notice');
+            const resendBtn = document.getElementById('resend-btn');
+            
+            let currentUserEmail = '';
+
+            // Password strength requirements
+            const passwordRequirements = {
+                minLength: 8,
+                hasUppercase: /[A-Z]/,
+                hasLowercase: /[a-z]/,
+                hasNumbers: /\d/,
+                hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/
+            };
+
+            signupForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Clear previous errors
+                clearErrors();
+                
+                // Get form data
+                const formData = new FormData(signupForm);
+                const email = formData.get('email').trim();
+                const username = formData.get('username').trim();
+                const password = formData.get('password');
+                const confirmPassword = formData.get('confirmPassword');
+
+                // Validation
+                let hasErrors = false;
+
+                if (!email) {
+                    showFieldError('email', 'Email is required');
+                    hasErrors = true;
+                } else if (!isValidEmail(email)) {
+                    showFieldError('email', 'Please enter a valid email address');
+                    hasErrors = true;
+                }
+
+                if (!username) {
+                    showFieldError('username', 'Username is required');
+                    hasErrors = true;
+                } else if (username.length < 3 || username.length > 30) {
+                    showFieldError('username', 'Username must be between 3 and 30 characters');
+                    hasErrors = true;
+                } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                    showFieldError('username', 'Username can only contain letters, numbers, and underscores');
+                    hasErrors = true;
+                }
+
+                const passwordStrength = checkPasswordStrength(password);
+                if (!password) {
+                    showFieldError('password', 'Password is required');
+                    hasErrors = true;
+                } else if (passwordStrength.score < 3) {
+                    showFieldError('password', 'Password is too weak. Please choose a stronger password.');
+                    hasErrors = true;
+                }
+
+                if (!confirmPassword) {
+                    showFieldError('confirmPassword', 'Please confirm your password');
+                    hasErrors = true;
+                } else if (password !== confirmPassword) {
+                    showFieldError('confirmPassword', 'Passwords do not match');
+                    hasErrors = true;
+                }
+
+                if (hasErrors) return;
+
+                // Show loading state
+                setLoadingState(true);
+
+                try {
+                    const response = await fetch('/api/auth/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, username, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        currentUserEmail = email;
+                        document.getElementById('user-email').textContent = email;
+                        signupForm.style.display = 'none';
+                        verificationNotice.style.display = 'block';
+                        showMessage('Account created successfully! Please check your email.', 'success');
+                    } else {
+                        if (data.field) {
+                            showFieldError(data.field, data.error);
+                        } else {
+                            showMessage(data.error || 'Signup failed. Please try again.', 'error');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Signup error:', error);
+                    showMessage('Network error. Please check your connection and try again.', 'error');
+                } finally {
+                    setLoadingState(false);
+                }
+            });
+
+            // Resend verification email with cooldown
+            let resendCooldownTimer = null;
+            let resendCooldownRemaining = 0;
+
+            function startResendCooldown(seconds) {
+                const cooldownEl = document.getElementById('resend-cooldown');
+                const cooldownSecondsEl = document.getElementById('cooldown-seconds');
+                resendCooldownRemaining = seconds;
+                cooldownSecondsEl.textContent = resendCooldownRemaining;
+                cooldownEl.style.display = 'block';
+                resendBtn.disabled = true;
+                resendBtn.classList.add('disabled');
+
+                if (resendCooldownTimer) clearInterval(resendCooldownTimer);
+                resendCooldownTimer = setInterval(() => {
+                    resendCooldownRemaining -= 1;
+                    if (resendCooldownRemaining <= 0) {
+                        clearInterval(resendCooldownTimer);
+                        cooldownEl.style.display = 'none';
+                        resendBtn.disabled = false;
+                        resendBtn.classList.remove('disabled');
+                    } else {
+                        cooldownSecondsEl.textContent = resendCooldownRemaining;
+                    }
+                }, 1000);
+            }
+
+            resendBtn.addEventListener('click', async function() {
+                setResendLoadingState(true);
+
+                try {
+                    const response = await fetch('/api/auth/resend-verification', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email: currentUserEmail })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        showMessage('Verification email sent successfully!', 'success');
+                        startResendCooldown(30);
+                    } else {
+                        showMessage(data.error || 'Failed to resend email. Please try again.', 'error');
+                    }
+                } catch (error) {
+                    console.error('Resend error:', error);
+                    showMessage('Network error. Please try again.', 'error');
+                } finally {
+                    setResendLoadingState(false);
+                }
+            });
+
+            // Real-time validation
+            document.getElementById('email').addEventListener('input', function() {
+                const email = this.value.trim();
+                if (email && isValidEmail(email)) {
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                    clearFieldError('email');
+                    showFieldSuccess('email', 'Valid email address');
+                } else if (email) {
+                    this.classList.remove('success');
+                    this.classList.add('error');
+                    clearFieldSuccess('email');
+                } else {
+                    this.classList.remove('error', 'success');
+                    clearFieldError('email');
+                    clearFieldSuccess('email');
+                }
+                updateSubmitButton();
+            });
+
+            document.getElementById('username').addEventListener('input', function() {
+                const username = this.value.trim();
+                if (username && username.length >= 3 && username.length <= 30 && /^[a-zA-Z0-9_]+$/.test(username)) {
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                    clearFieldError('username');
+                    showFieldSuccess('username', 'Valid username');
+                } else if (username) {
+                    this.classList.remove('success');
+                    this.classList.add('error');
+                    clearFieldSuccess('username');
+                    if (username.length < 3) {
+                        showFieldError('username', 'Username too short');
+                    } else if (username.length > 30) {
+                        showFieldError('username', 'Username too long');
+                    } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                        showFieldError('username', 'Only letters, numbers, and underscores allowed');
+                    }
+                } else {
+                    this.classList.remove('error', 'success');
+                    clearFieldError('username');
+                    clearFieldSuccess('username');
+                }
+                updateSubmitButton();
+            });
+
+            document.getElementById('password').addEventListener('input', function() {
+                const password = this.value;
+                const strengthContainer = document.getElementById('password-strength');
+                
+                if (password) {
+                    strengthContainer.style.display = 'block';
+                    const strength = checkPasswordStrength(password);
+                    updatePasswordStrengthUI(strength);
+                    
+                    if (strength.score >= 3) {
+                        this.classList.remove('error');
+                        this.classList.add('success');
+                        clearFieldError('password');
+                    } else {
+                        this.classList.remove('success');
+                        this.classList.add('error');
+                    }
+                } else {
+                    strengthContainer.style.display = 'none';
+                    this.classList.remove('error', 'success');
+                    clearFieldError('password');
+                }
+                
+                // Re-validate confirm password
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                if (confirmPassword) {
+                    validateConfirmPassword(password, confirmPassword);
+                }
+                
+                updateSubmitButton();
+            });
+
+            document.getElementById('confirmPassword').addEventListener('input', function() {
+                const password = document.getElementById('password').value;
+                const confirmPassword = this.value;
+                
+                validateConfirmPassword(password, confirmPassword);
+                updateSubmitButton();
+            });
+
+            function validateConfirmPassword(password, confirmPassword) {
+                const confirmField = document.getElementById('confirmPassword');
+                
+                if (confirmPassword) {
+                    if (password === confirmPassword) {
+                        confirmField.classList.remove('error');
+                        confirmField.classList.add('success');
+                        clearFieldError('confirmPassword');
+                        showFieldSuccess('confirmPassword', 'Passwords match');
+                    } else {
+                        confirmField.classList.remove('success');
+                        confirmField.classList.add('error');
+                        clearFieldSuccess('confirmPassword');
+                        showFieldError('confirmPassword', 'Passwords do not match');
+                    }
+                } else {
+                    confirmField.classList.remove('error', 'success');
+                    clearFieldError('confirmPassword');
+                    clearFieldSuccess('confirmPassword');
+                }
+            }
+
+            function checkPasswordStrength(password) {
+                let score = 0;
+                const feedback = [];
+
+                if (password.length >= passwordRequirements.minLength) {
+                    score++;
+                } else {
+                    feedback.push(`At least ${passwordRequirements.minLength} characters`);
+                }
+
+                if (passwordRequirements.hasUppercase.test(password)) {
+                    score++;
+                } else {
+                    feedback.push('One uppercase letter');
+                }
+
+                if (passwordRequirements.hasLowercase.test(password)) {
+                    score++;
+                } else {
+                    feedback.push('One lowercase letter');
+                }
+
+                if (passwordRequirements.hasNumbers.test(password)) {
+                    score++;
+                } else {
+                    feedback.push('One number');
+                }
+
+                if (passwordRequirements.hasSpecialChar.test(password)) {
+                    score++;
+                } else {
+                    feedback.push('One special character');
+                }
+
+                return { score, feedback };
+            }
+
+            function updatePasswordStrengthUI(strength) {
+                const strengthFill = document.getElementById('strength-fill');
+                const strengthText = document.getElementById('strength-text');
+                
+                const percentage = (strength.score / 5) * 100;
+                strengthFill.style.width = percentage + '%';
+                
+                if (strength.score <= 2) {
+                    strengthFill.className = 'strength-fill strength-weak';
+                    strengthText.textContent = 'Weak - Add: ' + strength.feedback.join(', ');
+                } else if (strength.score <= 3) {
+                    strengthFill.className = 'strength-fill strength-medium';
+                    strengthText.textContent = 'Medium - Add: ' + strength.feedback.join(', ');
+                } else {
+                    strengthFill.className = 'strength-fill strength-strong';
+                    strengthText.textContent = 'Strong password!';
+                }
+            }
+
+            function updateSubmitButton() {
+                const email = document.getElementById('email').value.trim();
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                const isValidForm = 
+                    email && isValidEmail(email) &&
+                    username && username.length >= 3 && username.length <= 30 && /^[a-zA-Z0-9_]+$/.test(username) &&
+                    password && checkPasswordStrength(password).score >= 3 &&
+                    confirmPassword && password === confirmPassword;
+                
+                signupBtn.disabled = !isValidForm;
+            }
+
+            function setLoadingState(loading) {
+                if (loading) {
+                    signupBtn.disabled = true;
+                    btnText.style.display = 'none';
+                    signupLoading.style.display = 'block';
+                } else {
+                    btnText.style.display = 'inline';
+                    signupLoading.style.display = 'none';
+                    updateSubmitButton();
+                }
+            }
+
+            function setResendLoadingState(loading) {
+                const resendBtnText = resendBtn.querySelector('.btn-text');
+                const resendLoading = document.getElementById('resend-loading');
+                
+                if (loading) {
+                    resendBtn.disabled = true;
+                    resendBtnText.style.display = 'none';
+                    resendLoading.style.display = 'block';
+                } else {
+                    resendBtn.disabled = false;
+                    resendBtnText.style.display = 'inline';
+                    resendLoading.style.display = 'none';
+                }
+            }
+
+            function clearErrors() {
+                const errorElements = document.querySelectorAll('.error-message');
+                const successElements = document.querySelectorAll('.success-message');
+                const inputElements = document.querySelectorAll('input');
+                
+                errorElements.forEach(el => el.textContent = '');
+                successElements.forEach(el => el.textContent = '');
+                inputElements.forEach(el => el.classList.remove('error', 'success'));
+            }
+
+            function showFieldError(fieldName, message) {
+                const errorElement = document.getElementById(fieldName + '-error');
+                if (errorElement) {
+                    errorElement.textContent = message;
+                }
+            }
+
+            function showFieldSuccess(fieldName, message) {
+                const successElement = document.getElementById(fieldName + '-success');
+                if (successElement) {
+                    successElement.textContent = message;
+                }
+            }
+
+            function clearFieldError(fieldName) {
+                const errorElement = document.getElementById(fieldName + '-error');
+                if (errorElement) {
+                    errorElement.textContent = '';
+                }
+            }
+
+            function clearFieldSuccess(fieldName) {
+                const successElement = document.getElementById(fieldName + '-success');
+                if (successElement) {
+                    successElement.textContent = '';
+                }
+            }
+
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function showMessage(message, type) {
+                const messageContainer = document.getElementById('message-container');
+                const messageElement = document.getElementById('message');
+                
+                messageElement.textContent = message;
+                messageElement.className = `message ${type}`;
+                messageContainer.style.display = 'block';
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    messageContainer.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html> 

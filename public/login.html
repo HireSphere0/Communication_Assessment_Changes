@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Communication Assessment Suite</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <link rel="stylesheet" href="auth-styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="topbar">
+            <div class="brand">Skill Tesseract</div>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+            </nav>
+        </div>
+
+        <!-- Login Form -->
+        <main class="page-band">
+            <div class="auth-form">
+                <h2>Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                        <div class="error-message" id="email-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                        <div class="error-message" id="password-error"></div>
+                    </div>
+                    <div class="form-links"
+                        style="margin-top: 4px; text-align: right; max-width: 420px; margin-left: auto; margin-right: auto;">
+                        <a href="#" id="forgot-password-link">Forgot your password?</a>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" id="login-btn">
+                            <span class="btn-text">Sign In</span>
+                            <div class="loading" id="login-loading">
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="form-links">
+                        <p>Don't have an account? <a href="/signup">Sign up</a></p>
+
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-inner">
+                <div class="footer-brand"><small>&copy; 2025 Skill Tesseract</small></div>
+                <nav class="footer-links" aria-label="Footer">
+                    <a href="/contact" class="footer-link">Contact us</a>
+                    <a href="mailto:mockinterview014@gmail.com" class="footer-link">Email</a>
+                    <a href="https://www.linkedin.com/company/skill-tesseract/?viewAsMember=true" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+                    <a href="https://www.instagram.com/skilltesseract" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Container -->
+    <div id="message-container" class="message-container" style="display: none;">
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.getElementById('login-form');
+            const loginBtn = document.getElementById('login-btn');
+            const loginLoading = document.getElementById('login-loading');
+            const btnText = document.querySelector('.btn-text');
+
+            // Show messages from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+            const type = urlParams.get('type');
+
+            if (message) {
+                showMessage(decodeURIComponent(message), type || 'info');
+            }
+
+            loginForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                // Clear previous errors
+                clearErrors();
+
+                // Get form data
+                const formData = new FormData(loginForm);
+                const email = formData.get('email').trim();
+                const password = formData.get('password');
+
+                // Basic validation
+                let hasErrors = false;
+
+                if (!email) {
+                    showFieldError('email', 'Email is required');
+                    hasErrors = true;
+                } else if (!isValidEmail(email)) {
+                    showFieldError('email', 'Please enter a valid email address');
+                    hasErrors = true;
+                }
+
+                if (!password) {
+                    showFieldError('password', 'Password is required');
+                    hasErrors = true;
+                }
+
+                if (hasErrors) return;
+
+                // Show loading state
+                setLoadingState(true);
+
+                try {
+                    const response = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        showMessage('Login successful! Redirecting...', 'success');
+                        setTimeout(() => {
+                            window.location.href = '/assessment';
+                        }, 1500);
+                    } else {
+                        if (data.field) {
+                            showFieldError(data.field, data.error);
+                        } else {
+                            showMessage(data.error || 'Login failed. Please try again.', 'error');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    showMessage('Network error. Please check your connection and try again.', 'error');
+                } finally {
+                    setLoadingState(false);
+                }
+            });
+
+            function setLoadingState(loading) {
+                if (loading) {
+                    loginBtn.disabled = true;
+                    btnText.style.display = 'none';
+                    loginLoading.style.display = 'block';
+                } else {
+                    loginBtn.disabled = false;
+                    btnText.style.display = 'inline';
+                    loginLoading.style.display = 'none';
+                }
+            }
+
+            function clearErrors() {
+                const errorElements = document.querySelectorAll('.error-message');
+                const inputElements = document.querySelectorAll('input');
+
+                errorElements.forEach(el => el.textContent = '');
+                inputElements.forEach(el => el.classList.remove('error', 'success'));
+            }
+
+            function showFieldError(fieldName, message) {
+                const field = document.getElementById(fieldName);
+                const errorElement = document.getElementById(fieldName + '-error');
+
+                if (field && errorElement) {
+                    field.classList.add('error');
+                    errorElement.textContent = message;
+                }
+            }
+
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function showMessage(message, type) {
+                const messageContainer = document.getElementById('message-container');
+                const messageElement = document.getElementById('message');
+
+                messageElement.textContent = message;
+                messageElement.className = `message ${type}`;
+                messageContainer.style.display = 'block';
+
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    messageContainer.style.display = 'none';
+                }, 5000);
+            }
+
+            // Forgot password functionality
+            document.getElementById('forgot-password-link').addEventListener('click', function (e) {
+                e.preventDefault();
+                showForgotPasswordModal();
+            });
+
+            // Real-time validation
+            document.getElementById('email').addEventListener('input', function () {
+                const email = this.value.trim();
+                if (email && isValidEmail(email)) {
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                    document.getElementById('email-error').textContent = '';
+                } else if (email) {
+                    this.classList.remove('success');
+                    this.classList.add('error');
+                } else {
+                    this.classList.remove('error', 'success');
+                }
+            });
+
+            document.getElementById('password').addEventListener('input', function () {
+                if (this.value.length >= 6) {
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                    document.getElementById('password-error').textContent = '';
+                } else if (this.value) {
+                    this.classList.remove('success');
+                    this.classList.add('error');
+                } else {
+                    this.classList.remove('error', 'success');
+                }
+            });
+
+            function showForgotPasswordModal() {
+                // Create modal if it doesn't exist
+                let modal = document.getElementById('forgot-password-modal');
+                if (!modal) {
+                    modal = document.createElement('div');
+                    modal.id = 'forgot-password-modal';
+                    modal.innerHTML = `
+                        <div class="modal-overlay">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3>Reset Password</h3>
+                                    <button type="button" class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Enter your email address and we'll send you a link to reset your password.</p>
+                                    <form id="forgot-password-form">
+                                        <div class="form-group">
+                                            <label for="forgot-email">Email Address</label>
+                                            <input type="email" id="forgot-email" name="email" required>
+                                            <div class="error-message" id="forgot-email-error"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary" id="forgot-submit-btn">
+                                                <span class="btn-text">Send Reset Link</span>
+                                                <div class="loading" id="forgot-loading">
+                                                    <div class="spinner"></div>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    modal.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        z-index: 1000;
+                        display: none;
+                    `;
+                    document.body.appendChild(modal);
+
+                    // Add event listener for the form
+                    document.getElementById('forgot-password-form').addEventListener('submit', handleForgotPasswordSubmit);
+                }
+                modal.style.display = 'block';
+            }
+
+            async function handleForgotPasswordSubmit(e) {
+                e.preventDefault();
+
+                const form = e.target;
+                const formData = new FormData(form);
+                const email = formData.get('email').trim();
+                const submitBtn = document.getElementById('forgot-submit-btn');
+                const btnText = submitBtn.querySelector('.btn-text');
+                const loading = document.getElementById('forgot-loading');
+                const errorElement = document.getElementById('forgot-email-error');
+
+                // Clear previous errors
+                errorElement.textContent = '';
+
+                // Validation
+                if (!email) {
+                    errorElement.textContent = 'Email is required';
+                    return;
+                }
+
+                if (!isValidEmail(email)) {
+                    errorElement.textContent = 'Please enter a valid email address';
+                    return;
+                }
+
+                // Show loading state
+                submitBtn.disabled = true;
+                btnText.style.display = 'none';
+                loading.style.display = 'block';
+
+                try {
+                    const response = await fetch('/api/auth/forgot-password', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        showMessage('Password reset link sent! Check your email for instructions.', 'success');
+                        closeForgotPasswordModal();
+                    } else {
+                        errorElement.textContent = data.error || 'Failed to send reset link. Please try again.';
+                    }
+                } catch (error) {
+                    console.error('Forgot password error:', error);
+                    errorElement.textContent = 'Network error. Please check your connection and try again.';
+                } finally {
+                    // Reset loading state
+                    submitBtn.disabled = false;
+                    btnText.style.display = 'inline';
+                    loading.style.display = 'none';
+                }
+            }
+
+            window.closeForgotPasswordModal = function () {
+                const modal = document.getElementById('forgot-password-modal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    // Clear form
+                    const form = document.getElementById('forgot-password-form');
+                    if (form) {
+                        form.reset();
+                        document.getElementById('forgot-email-error').textContent = '';
+                    }
+                }
+            }
+
+            // Close modal when clicking outside
+            document.addEventListener('click', function (e) {
+                const modal = document.getElementById('forgot-password-modal');
+                if (modal && e.target.classList.contains('modal-overlay')) {
+                    closeForgotPasswordModal();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

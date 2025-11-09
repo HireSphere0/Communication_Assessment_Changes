@@ -1,0 +1,275 @@
+/* Pre-Assessment Setup Styles */
+
+.setup-section {
+    min-height: 100vh;
+    /* Remove purple gradient and use page background */
+    background: transparent;
+    /* Match section paddings used across the app */
+    padding: 50px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.setup-container {
+    /* Remove boxed card and allow wider layout like other pages */
+    max-width: 1120px;
+    width: 100%;
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    margin: 0 auto;
+}
+
+.setup-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.setup-header h1 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.setup-subtitle {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.setup-checks {
+    margin-bottom: 30px;
+}
+
+.setup-check-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+    margin-bottom: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 4px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.setup-check-item.checking {
+    border-left-color: #ffc107;
+    background: #fff8e1;
+}
+
+.setup-check-item.success {
+    border-left-color: #28a745;
+    background: #d4edda;
+}
+
+.setup-check-item.error {
+    border-left-color: #dc3545;
+    background: #f8d7da;
+}
+
+.check-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    min-width: 30px;
+    text-align: center;
+}
+
+.check-content {
+    flex: 1;
+}
+
+.check-content h3 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.check-content p {
+    margin: 0 0 10px 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.check-status {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.checking .check-status {
+    color: #856404;
+}
+
+.success .check-status {
+    color: #155724;
+}
+
+.error .check-status {
+    color: #721c24;
+}
+
+.test-btn {
+    background: var(--brand-primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.test-btn:hover {
+    background: var(--brand-primary-dark);
+}
+
+.test-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+.setup-warnings {
+    margin-bottom: 30px;
+}
+
+.warning-box {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+    /* soften to match theme */
+    background: rgba(255, 243, 205, 0.6);
+    border: 1px solid #ffeaa7;
+    border-radius: 12px;
+}
+
+.warning-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    min-width: 30px;
+}
+
+.warning-content h3 {
+    margin: 0 0 15px 0;
+    color: #856404;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.warning-content ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #856404;
+}
+
+.warning-content li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.warning-content strong {
+    font-weight: 600;
+}
+
+.test-info-setup {
+    background: rgba(31,78,95,0.06);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(31,78,95,0.18);
+}
+
+.test-info-setup .test-count-text {
+    color: var(--brand-primary);
+    font-weight: 600;
+    margin: 0;
+}
+
+.test-info-setup .test-count-number {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.setup-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.setup-actions .btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.setup-actions .btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.setup-actions .btn-secondary:hover {
+    background: #545b62;
+}
+
+.setup-actions .btn-primary {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+    color: white;
+    min-width: 200px;
+}
+
+.setup-actions .btn-primary:hover:not(:disabled) {
+    filter: brightness(0.95);
+}
+
+.setup-actions .btn-primary:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .setup-container {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .setup-header h1 {
+        font-size: 2rem;
+    }
+    
+    .setup-check-item {
+        padding: 15px;
+    }
+    
+    .setup-actions {
+        flex-direction: column;
+    }
+    
+    .setup-actions .btn {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Animation for checking states */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.checking .check-icon {
+    animation: pulse 1.5s infinite;
+}

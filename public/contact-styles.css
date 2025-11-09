@@ -1,0 +1,95 @@
+/* Contact page – organized, professional layout */
+
+.contact-page { width: 100%; max-width: 1040px; margin: 0 auto; padding: clamp(24px, 6vh, 48px) clamp(16px, 4vw, 40px); display: block; }
+
+.contact-hero { text-align: center; margin: 0 auto clamp(10px, 3.5vh, 28px); max-width: 760px; }
+.contact-hero h1 { font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; font-weight: 900; letter-spacing: 0.2px; font-size: clamp(2rem, 4vw, 3rem); background: linear-gradient(90deg, var(--brand-ink), var(--brand-primary-dark)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.contact-hero .subtitle { margin-top: 8px; color: #384457; }
+
+/* Two-column layout */
+.contact-layout { display: grid; grid-template-columns: 1.35fr 1fr; gap: clamp(22px, 4vw, 40px); align-items: start; }
+.contact-layout.company { align-items: start; }
+
+/* New vertical flow variant */
+.contact-form-section { display: grid; justify-content: center; }
+.form-centered { max-width: 760px; margin: 0 auto; width: 100%; }
+
+.contact-left { display: grid; gap: clamp(16px, 2.5vh, 24px); }
+
+.card { background: transparent; border: none; border-radius: 0; box-shadow: none; }
+
+.contact-card { display: grid; grid-template-columns: 72px 1fr; gap: 16px; padding: clamp(8px, 1.8vw, 16px); }
+.contact-card.primary { border-left: 3px solid var(--brand-primary); padding-left: clamp(12px, 2vw, 18px); }
+.card-icon { width: 56px; height: 56px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark)); color: #ffffff; font-size: 28px; }
+.card-content h2 { margin: 2px 0 6px; color: var(--brand-ink); font-size: 1.35rem; font-weight: 800; }
+.card-content p { color: #384457; margin-bottom: 10px; }
+.cta-chip { display: inline-block; color: var(--brand-primary); font-weight: 800; letter-spacing: 0.2px; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Make entire card clickable */
+.link-card { text-decoration: none; color: inherit; transition: color 0.15s ease; }
+.link-card:hover .card-content h2 { color: var(--brand-primary); }
+.link-card:focus-visible { outline: 3px solid rgba(31,78,95,0.45); outline-offset: 2px; }
+
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.contact-mini { display: flex; align-items: center; gap: 12px; padding: 14px; text-decoration: none; color: inherit; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.contact-mini:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(31,78,95,0.10); }
+.contact-mini.muted { opacity: 0.9; }
+.mini-icon { width: 40px; height: 40px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: rgba(31,78,95,0.08); color: var(--brand-primary-dark); font-weight: 800; }
+.mini-title { font-weight: 800; color: var(--brand-ink); }
+.mini-link { color: var(--brand-primary); font-weight: 700; }
+
+.info-card { padding: 6px 0; position: sticky; top: 16px; }
+.info-card h3 { font-size: 1.1rem; color: var(--brand-ink); margin-bottom: 10px; }
+.list { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 8px; }
+.list li { color: #384457; }
+.small { color: #5a6a82; font-size: 0.95rem; }
+
+@media (max-width: 900px) {
+  .contact-layout { grid-template-columns: 1fr; }
+  .info-card { position: static; }
+}
+
+/* New: company contact form + sidebar */
+.form-col { display: block; }
+.form-card { padding: clamp(16px, 2.6vw, 24px); background: rgba(255,255,255,0.95); border: 1px solid rgba(31,78,95,0.12); border-radius: 14px; box-shadow: 0 10px 24px rgba(31,78,95,0.06); }
+.form-card .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 12px; }
+.form-card .field { display: grid; gap: 6px; }
+.form-card label { font-size: 0.95rem; font-weight: 600; color: var(--brand-ink); }
+.form-card input, .form-card select, .form-card textarea {
+  width: 100%;
+  padding: 12px 12px;
+  background: #ffffff;
+  border: 1px solid #cfd8e3;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #0b1320;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.form-card input:focus, .form-card select:focus, .form-card textarea:focus {
+  outline: none; border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(31,78,95,0.14);
+}
+.form-card .error { color: #c62828; font-size: 0.85rem; min-height: 18px; }
+.form-card .form-actions { display: flex; align-items: center; gap: 12px; margin-top: 6px; flex-wrap: wrap; }
+.form-card .privacy { color: #5a6a82; font-size: 0.92rem; }
+
+.info-col { display: grid; gap: 16px; border-left: 1px solid rgba(31,78,95,0.18); padding-left: clamp(12px, 2vw, 20px); }
+.channels { display: grid; gap: 0; border-top: 1px solid rgba(31,78,95,0.12); max-width: 760px; margin: 0 auto; }
+.channel { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: center; padding: 12px 2px; text-decoration: none; color: inherit; transition: color 0.15s ease, background-color 0.15s ease; border-bottom: 1px solid rgba(31,78,95,0.12); }
+.channel:hover { background: rgba(31,78,95,0.05); }
+.channel .icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(31,78,95,0.08); display: inline-flex; align-items: center; justify-content: center; color: var(--brand-primary-dark); }
+.channel .text span { display: block; font-weight: 800; color: var(--brand-ink); line-height: 1.1; }
+.channel .text em { display: block; font-style: normal; color: var(--brand-primary); font-weight: 700; }
+
+.channels-section { margin-top: clamp(28px, 8vh, 72px); }
+.channels-section h2 { text-align: center; font-size: 1.4rem; color: var(--brand-ink); margin-bottom: 12px; }
+.company-card { padding: 12px 0 0 0; max-width: 760px; margin: 10px auto 0; }
+.company-card .row { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: center; }
+.company-card .i { width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; color: var(--brand-primary-dark); }
+.muted-link { color: var(--brand-primary); text-decoration: none; font-weight: 700; }
+.muted-link:hover { text-decoration: underline; }
+
+@media (max-width: 720px) {
+  .form-card .form-row { grid-template-columns: 1fr; }
+}
+
+

@@ -1,0 +1,789 @@
+/* Fill in the Blanks Assessment Styles */
+
+.fillblanks-instructions {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 30px;
+    grid-column: 1 / -1;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.instructions-content h3 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.instructions-content p {
+    color: #666;
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.instructions-content ul {
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    color: #555;
+}
+
+.instructions-content li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.fillblanks-quiz {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 30px;
+    grid-column: 1 / -1;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.question-progress {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #495057;
+}
+
+.question-container {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+    border: 2px solid #e9ecef;
+}
+
+.fillblanks-question-content {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    border: 2px solid #e9ecef;
+}
+
+.fillblanks-question-content h4 {
+    color: #495057;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+.question-sentence {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.question-sentence p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+    font-weight: 500;
+}
+
+.options-container h5 {
+    color: #495057;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.question-text {
+    font-size: 1.2em;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.question-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.option-item:hover {
+    border-color: var(--brand-primary);
+    background: #f0f8ff;
+}
+
+.option-item.selected {
+    border-color: var(--brand-primary);
+    background: #eef6f8;
+}
+
+.option-radio {
+    accent-color: var(--brand-primary);
+}
+
+.option-text {
+    font-size: 1em;
+    color: #333;
+    line-height: 1.4;
+}
+
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.nav-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.9em;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: #5a6268;
+    transform: translateY(-1px);
+}
+
+.nav-btn:disabled {
+    background: #adb5bd;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.submit-btn {
+    background: var(--brand-primary);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1em;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.submit-btn:hover {
+    background: var(--brand-primary-dark);
+    transform: translateY(-2px);
+}
+
+.progress-indicator {
+    text-align: center;
+    grid-column: 2;
+}
+
+.progress-bar {
+    background: #e9ecef;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--brand-primary), var(--brand-primary-dark));
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.answered-count {
+    font-size: 0.9em;
+    color: #666;
+    font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+    .fillblanks-quiz {
+        padding: 20px;
+    }
+
+    .question-container {
+        padding: 20px;
+    }
+
+    .quiz-navigation {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-btn,
+    .submit-btn {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+/* Fill in the Blanks feedback styles */ 
+
+.fillblanks-feedback-content .quiz-summary {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Fill in the Blanks — Comprehension-style layout and theme */
+#fillblanks-assessment.assessment-section {
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+#fillblanks-assessment .fillblanks-quiz {
+    max-width: none;
+    width: 100%;
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+}
+
+/* Remove boxes and heavy containers */
+#fillblanks-assessment .fillblanks-question-content {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+#fillblanks-assessment .fillblanks-question-content h4 {
+    display: none;
+}
+
+#fillblanks-assessment .question-sentence {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    border-radius: 0;
+    margin: 0;
+}
+
+#fillblanks-assessment .question-sentence p {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-left: 24px;
+}
+
+#fillblanks-assessment .options-container h5 {
+    display: none;
+}
+
+#fillblanks-assessment .progress-indicator {
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    margin-top: 48px;
+}
+
+#fillblanks-assessment .progress-fill {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+}
+
+/* Options theme to match comprehension */
+#fillblanks-assessment .options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#fillblanks-assessment .option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 15px 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+#fillblanks-assessment .option-label:hover {
+    border-color: var(--brand-primary);
+    background: rgba(31, 78, 95, 0.04);
+}
+
+#fillblanks-assessment .option-label.selected {
+    border-color: var(--brand-primary);
+    background: rgba(31, 78, 95, 0.08);
+}
+
+/* Navigation buttons themed like comprehension */
+#fillblanks-assessment .nav-btn {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+    color: #ffffff;
+    border: 0;
+    padding: 12px 22px;
+    font-size: 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: 0 8px 22px rgba(22, 58, 70, 0.18);
+}
+
+#fillblanks-assessment .nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(22, 58, 70, 0.25);
+}
+
+#fillblanks-assessment .nav-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 18px rgba(22, 58, 70, 0.18);
+}
+
+#fillblanks-assessment .nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Fill in the Blanks: place nav beside the question without shifting other content */
+@media (min-width: 1025px) {
+    #fillblanks-assessment .fillblanks-quiz {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 40px;
+        max-width: none;
+        align-items: start;
+    }
+
+    #fillblanks-assessment .fillblanks-quiz .question-progress {
+        grid-column: 1 / -1;
+        grid-row: 1;
+    }
+
+    #fillblanks-assessment #fillblanks-question-container {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    #fillblanks-assessment .quiz-navigation {
+        grid-column: 2;
+        grid-row: 2;
+        margin-left: 40px;
+        margin-top: 0;
+    }
+
+    #fillblanks-assessment .fillblanks-quiz .progress-indicator {
+        grid-column: 1 / -1;
+        grid-row: 3;
+    }
+}
+
+/* Two-column placement like comprehension: question left, options + nav right */
+@media (min-width: 700px) {
+    #fillblanks-assessment .fillblanks-quiz {
+        display: grid;
+        grid-template-columns: 1fr 520px;
+        gap: 56px;
+        max-width: none;
+        align-items: start;
+    }
+
+    #fillblanks-assessment #fillblanks-question-container,
+    #fillblanks-assessment .fillblanks-question-content {
+        display: contents;
+    }
+
+    #fillblanks-assessment .question-sentence {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    #fillblanks-assessment .options-container {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: start;
+        width: 100%;
+        max-width: 520px;
+        margin-top: 0;
+    }
+
+    #fillblanks-assessment .quiz-navigation {
+        grid-column: 2;
+        grid-row: 2;
+        margin-top: 48px;
+        justify-content: space-between;
+    }
+
+    #fillblanks-assessment .progress-indicator {
+        grid-column: 1 / -1;
+        grid-row: 3;
+    }
+}
+
+@media (max-width: 699px) {
+    #fillblanks-assessment .fillblanks-quiz {
+        display: block;
+    }
+}/*
+ Enlarge question and make it span the full available width */
+#fillblanks-assessment .question-sentence {
+    width: 100%;
+    max-width: none;
+}
+
+#fillblanks-assessment .question-sentence p {
+    font-size: 1.5rem;
+    line-height: 2.0;
+}
+
+/* Enhanced desktop layout */
+@media (min-width: 1025px) {
+    #fillblanks-assessment .fillblanks-quiz {
+        grid-template-columns: 1fr 520px;
+    }
+    
+    #fillblanks-assessment .options-container { 
+        grid-column: 2; 
+    }
+    
+    #fillblanks-assessment .quiz-navigation { 
+        grid-column: 2; 
+    }
+}
+
+/* Fill in the Blanks — match comprehension font, margins, and placement */
+#fillblanks-assessment .question-sentence p {
+    font-size: 1.1rem; /* match comprehension */
+    font-weight: 700;
+    margin-left: 24px;
+}
+
+#fillblanks-assessment .options-container {
+    margin-left: 24px;
+}
+
+/* Enhanced grid layout for larger screens */
+@media (min-width: 1200px) {
+    #fillblanks-assessment .fillblanks-quiz {
+        grid-template-columns: 1fr 520px; /* left: question, right: options */
+    }
+    
+    #fillblanks-assessment .options-container {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: start;
+        width: 100%;
+        max-width: 520px;
+        margin-top: 0;
+    }
+}
+
+/* Remove margins for clean layout */
+#fillblanks-assessment .question-progress,
+#fillblanks-assessment .question-sentence,
+#fillblanks-assessment .question-sentence p,
+#fillblanks-assessment .options-container,
+#fillblanks-assessment .quiz-navigation {
+    margin-left: 0 !important; /* prevent double indentation; container provides gutter */
+}
+
+/* Advanced grid layout for fillblanks */
+@media (min-width: 1025px) {
+    #fillblanks-assessment .fillblanks-quiz {
+        display: grid;
+        grid-template-columns: 1fr 520px;
+        gap: 56px;
+        align-items: start;
+    }
+    
+    #fillblanks-assessment .fillblanks-question-content .question-sentence { 
+        grid-column: 1; 
+    }
+    
+    #fillblanks-assessment .fillblanks-question-content .options-container { 
+        grid-column: 2; 
+        width: 100%; 
+        max-width: 520px; 
+    }
+    
+    #fillblanks-assessment .quiz-navigation { 
+        grid-column: 2; 
+        width: 100%; 
+        max-width: 520px; 
+        justify-content: space-between; 
+    }
+}
+
+/* Specific layout adjustments */
+@media (min-width: 1025px) {
+    #fillblanks-assessment .fillblanks-question-content { 
+        display: contents; 
+    }
+    
+    /* Place question text on the left */
+    #fillblanks-assessment .question-sentence { 
+        grid-column: 1; 
+        grid-row: 1; 
+    }
+    
+    /* Place options at the top-right */
+    #fillblanks-assessment .options-container { 
+        grid-column: 2; 
+        grid-row: 1; 
+        width: 100%; 
+        max-width: 520px; 
+    }
+    
+    /* Place navigation directly below options on the right */
+    #fillblanks-assessment .quiz-navigation { 
+        grid-column: 2; 
+        grid-row: 2; 
+        width: 100%; 
+        max-width: 520px; 
+        justify-content: space-between; 
+        margin-top: 24px; 
+    }
+}
+
+/* Responsive adjustments */
+@media (min-width: 1025px) {
+    #fillblanks-assessment.assessment-section { 
+        padding-left: 60px; 
+        padding-right: 60px; 
+    }
+    
+    #fillblanks-assessment .assessment-header { 
+        padding-left: 0; 
+        padding-right: 0; 
+    }
+    
+    /* Ensure question stays on the left side and never crosses midpoint */
+    #fillblanks-assessment .question-sentence { 
+        max-width: 48vw; 
+    }
+    
+    /* More space between question number and the question */
+    #fillblanks-assessment .question-progress { 
+        margin-bottom: 16px; 
+    }
+}
+
+/* Fill in the Blanks — bring question down and constrain to left half */
+@media (min-width: 1025px) {
+    #fillblanks-assessment .question-sentence {
+        margin-top: 28px !important;
+        max-width: 44vw; /* ensure it never crosses midpoint */
+    }
+}/*
+ Hide the answered/progress bar below */
+#fillblanks-assessment .progress-indicator {
+    display: none !important;
+}
+
+/* Keep options and navigation on the right column */
+@media (min-width: 700px) {
+    #fillblanks-assessment .fillblanks-quiz {
+        grid-template-columns: 1fr 520px;
+    }
+    
+    #fillblanks-assessment .options-container { 
+        grid-column: 2; 
+    }
+    
+    #fillblanks-assessment .quiz-navigation { 
+        grid-column: 2; 
+    }
+}
+
+/* Fill in the Blanks — match comprehension font, margins, and placement */
+#fillblanks-assessment .quiz-navigation {
+    margin-left: 24px;
+}
+
+@media (min-width: 700px) {
+    #fillblanks-assessment .fillblanks-quiz {
+        display: grid;
+        grid-template-columns: 1fr 520px; /* left: question, right: options */
+    }
+    
+    #fillblanks-assessment .options-container {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: start;
+        width: 100%;
+        max-width: 520px;
+        margin-top: 0;
+    }
+    
+    #fillblanks-assessment .quiz-navigation {
+        grid-column: 2;
+        grid-row: 2; /* directly below options */
+        width: 100%;
+        max-width: 520px;
+        justify-content: space-between;
+        margin-top: 24px;
+    }
+}
+
+/* Fill in the Blanks — apply consistent left gutter to all quiz elements */
+#fillblanks-assessment .fillblanks-quiz {
+    padding-left: 24px;
+}
+
+/* Fill in the Blanks — add left gutter to heading and sub-heading */
+#fillblanks-assessment .assessment-header {
+    padding-left: 24px;
+}
+
+#fillblanks-assessment .assessment-header h2,
+#fillblanks-assessment .assessment-header p {
+    margin-left: 0 !important; /* prevent double indent if any */
+}
+
+/* Fill in the Blanks — force right-side options and nav via inner two-column grid */
+@media (min-width: 700px) {
+    #fillblanks-assessment .fillblanks-question-content {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 520px;
+        column-gap: 56px;
+        align-items: start;
+    }
+    
+    #fillblanks-assessment .fillblanks-question-content .question-sentence { 
+        grid-column: 1; 
+    }
+    
+    #fillblanks-assessment .fillblanks-question-content .options-container { 
+        grid-column: 2; 
+        width: 100%; 
+        max-width: 520px; 
+    }
+    
+    #fillblanks-assessment .quiz-navigation { 
+        grid-column: 2; 
+        width: 100%; 
+        max-width: 520px; 
+        justify-content: space-between; 
+    }
+}
+
+/* Fill in the Blanks — full-width two-column layout (desktop) */
+@media (min-width: 1025px) {
+    #fillblanks-assessment .fillblanks-quiz {
+        grid-column: 1 / -1 !important; /* span full page grid */
+        display: grid !important;
+        grid-template-columns: 1fr 520px; /* left: question, right: options */
+        column-gap: 56px;
+        row-gap: 0;
+        align-items: start;
+        max-width: none;
+        width: 100%;
+        margin: 0;
+    }
+    
+    /* Let inner wrappers participate in the outer grid */
+    #fillblanks-assessment #fillblanks-question-container,
+    #fillblanks-assessment .fillblanks-question-content { 
+        display: contents; 
+    }
+    
+    /* Place question text on the left */
+    #fillblanks-assessment .question-sentence { 
+        grid-column: 1; 
+        grid-row: 1; 
+    }
+    
+    /* Place options at the top-right */
+    #fillblanks-assessment .options-container { 
+        grid-column: 2; 
+        grid-row: 1; 
+        width: 100%; 
+        max-width: 520px; 
+    }
+    
+    /* Place navigation directly below options on the right */
+    #fillblanks-assessment .quiz-navigation { 
+        grid-column: 2; 
+        grid-row: 2; 
+        width: 100%; 
+        max-width: 520px; 
+        justify-content: space-between; 
+        margin-top: 24px; 
+    }
+}
+
+/* Fill in the Blanks — constrain question to left half and add symmetric margins */
+@media (min-width: 1025px) {
+    /* Equal page gutters like comprehension */
+    #fillblanks-assessment.assessment-section { 
+        padding-left: 60px; 
+        padding-right: 60px; 
+    }
+    
+    /* Remove inner quiz padding so gutters are symmetric */
+    #fillblanks-assessment .fillblanks-quiz { 
+        padding-left: 0; 
+        padding-right: 0; 
+    }
+    
+    /* Header aligns with section gutters */
+    #fillblanks-assessment .assessment-header { 
+        padding-left: 0; 
+        padding-right: 0; 
+    }
+    
+    /* Ensure question stays on the left side and never crosses midpoint */
+    #fillblanks-assessment .question-sentence { 
+        max-width: 48vw; 
+    }
+    
+    /* More space between question number and the question */
+    #fillblanks-assessment .question-progress { 
+        margin-bottom: 16px; 
+    }
+}
+
+/* Fill in the Blanks — increase space between progress and question */
+#fillblanks-assessment .question-progress {
+    margin-bottom: 24px !important;
+}
+
+/* Fill in the Blanks — bring question down and constrain to left half */
+@media (min-width: 1025px) {
+    #fillblanks-assessment .question-sentence {
+        margin-top: 28px !important;
+        max-width: 44vw; /* ensure it never crosses midpoint */
+    }
+}
+
+/* Hide the "Question X of Y" line in Fill in the Blanks */
+#fillblanks-assessment .question-progress {
+    display: none !important;
+}
+
+/* Align question start with options (same top line) */
+#fillblanks-assessment .question-sentence {
+    margin-top: 0 !important;
+}

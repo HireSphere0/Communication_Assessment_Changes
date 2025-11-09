@@ -1,0 +1,48 @@
+/* Listening Assessment Styles */
+
+/* Audio Section */
+.audio-section { 
+    background: transparent; 
+    border-radius: 0; 
+    padding: 0; 
+    margin-bottom: 20px; 
+    text-align: left; 
+    grid-column: 1;
+}
+
+.audio-player audio { 
+    margin: 10px 0 20px 0; 
+    width: 100%; 
+    max-width: 420px; 
+}
+
+.instruction { 
+    color: #495057; 
+    font-style: normal; 
+    margin: 0 0 8px 0; 
+}
+
+/* Slightly lower the listening record button to align with the audio bar */
+#listening-controls {
+    margin-top: 20px;
+    grid-column: 2;
+}
+
+/* Recording Controls - inherits from base styles but with specific positioning */
+#listening-controls .recording-controls {
+    text-align: center;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Audio Controls */
+.audio-controls {
+    grid-column: 1;
+}
+
+.audio-controls + .summary-section {
+    grid-column: 2;
+}

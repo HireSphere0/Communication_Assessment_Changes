@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Skill Tesseract</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <link rel="stylesheet" href="/auth-styles.css">
+    <link rel="stylesheet" href="/contact-styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <div class="brand">Skill Tesseract</div>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+            </nav>
+        </div>
+
+        <main class="contact-page page-band">
+            <header class="contact-hero" aria-labelledby="contact-title">
+                <h1 id="contact-title">Contact Skill Tesseract</h1>
+                <p class="subtitle">We'd love to learn about your needs and help you get started.</p>
+            </header>
+
+            <section class="contact-form-section" aria-label="Contact form">
+                <div class="form-col form-centered">
+                    <form id="contact-form" class="card form-card" novalidate>
+                        <div class="form-row">
+                            <div class="field">
+                                <label for="fullName">Full name</label>
+                                <input id="fullName" name="fullName" type="text" required placeholder="Jane Doe">
+                                <span class="error" data-for="fullName"></span>
+                            </div>
+                            <div class="field">
+                                <label for="email">Email ID</label>
+                                <input id="email" name="email" type="email" required placeholder="yourname@gmail.com">
+                                <span class="error" data-for="email"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="field">
+                                <label for="company">University Name (NA if not applicable)</label>
+                                <input id="company" name="company" type="text" placeholder="University name">
+                            </div>
+                            <div class="field">
+                                <label for="phone">Phone</label>
+                                <input id="phone" name="phone" type="tel" placeholder="Optional">
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="field">
+                            <label for="message">How can we help?</label>
+                            <textarea id="message" name="message" rows="6" required placeholder="Tell us a bit about your goals or question..."></textarea>
+                            <span class="error" data-for="message"></span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Send message</button>
+                            <p class="privacy">By submitting, you agree to be contacted about your request.</p>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            
+        </main>
+
+        <script>
+            (function(){
+                const form = document.getElementById('contact-form');
+                if(!form) return;
+                const fields = ['fullName','email','message'];
+                function showError(id, msg){
+                    const el = form.querySelector(`.error[data-for="${id}"]`);
+                    if(el){ el.textContent = msg || ''; }
+                }
+                function validate(){
+                    let ok = true;
+                    const name = form.fullName.value.trim();
+                    const email = form.email.value.trim();
+                    const message = form.message.value.trim();
+                    showError('fullName',''); showError('email',''); showError('message','');
+                    if(!name){ showError('fullName','Please enter your name.'); ok = false; }
+                    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showError('email','Enter a valid email.'); ok = false; }
+                    if(!message){ showError('message','Please include a short message.'); ok = false; }
+                    return ok;
+                }
+                form.addEventListener('submit', function(e){
+                    e.preventDefault();
+                    if(!validate()) return;
+                    const payload = {
+                        fullName: form.fullName.value.trim(),
+                        email: form.email.value.trim(),
+                        company: form.company?.value?.trim() || '',
+                        phone: form.phone?.value?.trim() || '',
+                        message: form.message.value.trim()
+                    };
+                    fetch('/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    }).then(async (r) => {
+                        const data = await r.json().catch(()=>({}));
+                        if(r.ok){
+                            alert('Thanks! Your message has been sent successfully.');
+                            form.reset();
+                        } else {
+                            alert(data.error || 'Failed to send message. Please try again later.');
+                        }
+                    }).catch(() => alert('Network error. Please try again.'));
+                });
+            })();
+        </script>
+
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="footer-brand"><small>&copy; 2025 Skill Tesseract</small></div>
+                <nav class="footer-links" aria-label="Footer">
+                    <a href="/contact" class="footer-link">Contact us</a>
+                    <a href="mailto:mockinterview014@gmail.com" class="footer-link">Email</a>
+                    <a href="https://www.linkedin.com/company/skill-tesseract/?viewAsMember=true" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+                    <a href="https://www.instagram.com/skilltesseract" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+

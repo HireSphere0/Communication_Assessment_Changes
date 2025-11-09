@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YZV45WHW9X"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-YZV45WHW9X');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Results - Communication Assessment Suite</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="base-styles.css">
+    <link rel="stylesheet" href="results-styles.css">
+    <script src="/js/vendor/microsoft-speech-sdk.js"></script>
+</head>
+
+<body>
+    <div class="container results-page">
+        <!-- Common topbar header (same as assessment page) -->
+        <div class="topbar">
+            <div class="brand">Skill Tesseract</div>
+            <nav class="nav-links">
+                <a href="/" class="nav-link" id="logout-link">Logout</a>
+            </nav>
+        </div>
+
+        <!-- End of Assessment Section -->
+        <div class="end-assessment-section" id="end-assessment-section" style="display: none;">
+            <div class="end-assessment-content" role="region" aria-label="Assessment completion">
+                <h2 class="end-title">Assessment complete</h2>
+                <p class="completion-message">
+                    You’ve successfully finished all seven communication assessment sections.
+                </p>
+
+                <div class="assessment-summary">
+                    <h3>Completed sections</h3>
+                    <div class="completed-sections">
+                        <div class="completed-item">Reading Ability Assessment</div>
+                        <div class="completed-item">Listening Ability Assessment</div>
+                        <div class="completed-item">Jumbled Sentences Assessment</div>
+                        <div class="completed-item">Story Summarization Assessment</div>
+                        <div class="completed-item">Personal Questions Assessment</div>
+                        <div class="completed-item">Reading Comprehension Assessment</div>
+                        <div class="completed-item">Fill in the Blanks Assessment</div>
+                    </div>
+                </div>
+
+                <div class="results-preview">
+                    <p class="preview-text">
+                        Your responses have been analyzed and scored across all communication dimensions.
+                        Review your detailed results and overall analysis.
+                    </p>
+                </div>
+
+                <div class="view-results-container">
+                    <button id="view-results-btn" class="view-results-btn"
+                        aria-label="View detailed results and analysis">
+                        View results and analysis
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Individual Section Results -->
+        <div class="individual-results" id="individual-results" style="display: none;">
+            <div class="results-header">
+                <h2>Assessment Complete</h2>
+                <p>Here's your detailed performance breakdown for each section</p>
+            </div>
+
+            <div class="individual-sections" id="individual-sections">
+                <!-- Individual section results will be populated here -->
+            </div>
+
+            <div class="continue-to-overall">
+                <button id="view-overall-btn" class="view-overall-btn">
+                    View Overall Analysis & Feedback
+                </button>
+            </div>
+        </div>
+
+        <!-- Final Results -->
+        <div class="final-results" id="final-results" style="display: none;">
+            <div class="results-header">
+                <h2>Overall Assessment Analysis</h2>
+                <p>Here's your comprehensive communication assessment report</p>
+            </div>
+
+            <div class="overall-score">
+                <div class="score-circle">
+                    <div class="score-number" id="overall-score">--</div>
+                    <div class="score-text">Overall Score</div>
+                </div>
+            </div>
+
+            <div class="detailed-scores">
+                <div class="score-item">
+                    <span class="score-name">Reading Ability</span>
+                    <span class="score-bar">
+                        <span class="score-fill" id="reading-score-bar"></span>
+                    </span>
+                    <span class="score-num" id="reading-final-score">--</span>
+                </div>
+
+                <div class="score-item">
+                    <span class="score-name">Listening Ability</span>
+                    <span class="score-bar">
+                        <span class="score-fill" id="listening-score-bar"></span>
+                    </span>
+                    <span class="score-num" id="listening-final-score">--</span>
+                </div>
+
+                <div class="score-item">
+                    <span class="score-name">Jumbled Sentences</span>
+                    <span class="score-bar">
+                        <span class="score-fill" id="jumbled-score-bar"></span>
+                    </span>
+                    <span class="score-num" id="jumbled-final-score">--</span>
+                </div>
+
+                <div class="score-item">
+                    <span class="score-name">Story Summarization</span>
+                    <span class="score-bar">
+                        <span class="score-fill" id="story-score-bar"></span>
+                    </span>
+                    <span class="score-num" id="story-final-score">--</span>
+                </div>
+
+                <div class="score-item">
+                    <span class="score-name">Personal Questions</span>
+                    <span class="score-bar">
+                        <span class="score-fill" id="personal-score-bar"></span>
+                    </span>
+                    <span class="score-num" id="personal-final-score">--</span>
+                </div>
+
+                <div class="score-item">
+                    <span class="score-name">Reading Comprehension</span>
+                    <span class="score-bar">
+                        <span class="score-fill" id="comprehension-score-bar"></span>
+                    </span>
+                    <span class="score-num" id="comprehension-final-score">--</span>
+                </div>
+
+                <div class="score-item">
+                    <span class="score-name">Fill in the Blanks</span>
+                    <span class="score-bar">
+                        <span class="score-fill" id="fillblanks-score-bar"></span>
+                    </span>
+                    <span class="score-num" id="fillblanks-final-score">--</span>
+                </div>
+            </div>
+
+            <!-- Consolidated Critical Feedback Section -->
+            <div class="consolidated-feedback" id="consolidated-feedback" style="display: none;">
+                <div class="feedback-header">
+                    <h3>Comprehensive Assessment Analysis</h3>
+                    <p>Critical evaluation of your communication skills across all sections</p>
+                </div>
+                <div class="feedback-content" id="consolidated-feedback-content">
+                    <div class="loading-feedback">
+                        <div class="spinner"></div>
+                        <p>Analyzing your performance across all assessments...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-actions">
+                <button id="end-assessment-btn" class="action-btn">End Assessment</button>
+                <button id="restart-btn" class="action-btn">Start New Assessment</button>
+            </div>
+        </div>
+
+        <!-- Back to Home Button -->
+        <div class="back-to-home">
+            <button id="back-to-home-btn" class="action-btn secondary">Back to Home</button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="footer-brand"><small>&copy; 2025 Skill Tesseract</small></div>
+                <nav class="footer-links" aria-label="Footer">
+                    <a href="/contact" class="footer-link">Contact us</a>
+                    <a href="mailto:mockinterview014@gmail.com" class="footer-link">Email</a>
+                    <a href="https://www.linkedin.com/company/skill-tesseract/?viewAsMember=true" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+                    <a href="https://www.instagram.com/skilltesseract" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+
+    <script src="result.js"></script>
+
+    <script>
+        // Initialize results page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create result controller instance for results page
+            window.resultController = new ResultController();
+
+            // Automatically show results when page loads
+            window.resultController.showFinalResults();
+        });
+    </script>
+</body>
+
+</html>

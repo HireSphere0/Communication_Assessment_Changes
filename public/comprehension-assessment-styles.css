@@ -1,0 +1,541 @@
+/* Reading Comprehension Assessment Styles */
+
+.comprehension-setup {
+    text-align: center;
+    padding: 40px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.auto-generation-message {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+    font-size: 1.1em;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 1px solid #dee2e6;
+}
+
+.auto-generation-message p {
+    margin: 0;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.comprehension-quiz {
+    /* Full-width layout for comprehension; two-column grid handled below */
+    display: grid;
+    max-width: none;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.comprehension-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.comprehension-right {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 1024px) {
+    .comprehension-quiz {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+.passage-section {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.passage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.passage-header h3 {
+    color: #333;
+    margin: 0;
+    font-size: 1.3em;
+}
+
+.passage-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.topic-badge,
+.difficulty-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.topic-badge {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.difficulty-badge {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.difficulty-badge.easy {
+    background: #e8f5e8;
+    color: #2e7d32;
+}
+
+.difficulty-badge.intermediate {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.difficulty-badge.advanced {
+    background: #ffebee;
+    color: #d32f2f;
+}
+
+.passage-content {
+    font-size: 1.05em;
+    line-height: 1.7;
+    color: #333;
+    text-align: justify;
+}
+
+.passage-content p {
+    margin-bottom: 15px;
+}
+
+.passage-content p:last-child {
+    margin-bottom: 0;
+}
+
+.questions-section {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.question-header h3 {
+    color: #333;
+    margin: 0;
+    font-size: 1.3em;
+}
+
+.question-progress {
+    background: #e9ecef;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #495057;
+}
+
+.question-text-container {
+    margin-bottom: 20px;
+}
+
+.question-text {
+    font-size: 1.1em;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.question-display {
+    margin-bottom: 25px;
+}
+
+.question-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 15px;
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.option-item:hover {
+    border-color: var(--brand-primary);
+    background: #f8fbff;
+}
+
+.option-item.selected {
+    border-color: var(--brand-primary);
+    background: #eef6f8;
+}
+
+.option-radio {
+    margin-top: 2px;
+    accent-color: var(--brand-primary);
+}
+
+.option-text {
+    flex: 1;
+    font-size: 1em;
+    color: #333;
+    line-height: 1.5;
+}
+
+.question-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.nav-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.9em;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: #5a6268;
+    transform: translateY(-1px);
+}
+
+.nav-btn:disabled {
+    background: #adb5bd;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.submit-btn {
+    background: var(--brand-primary);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1em;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.submit-btn:hover {
+    background: var(--brand-primary-dark);
+    transform: translateY(-2px);
+}
+
+/* Reading Comprehension: Clean, full-width two-column layout */
+.passage-section { 
+    background: transparent; 
+    border-radius: 0; 
+    padding: 0; 
+    margin: 0; 
+}
+
+#comprehension-assessment .passage-content { 
+    max-width: 48vw; 
+}
+
+.questions-section { 
+    background: transparent; 
+    border-radius: 0; 
+    padding: 0; 
+    box-shadow: none; 
+}
+
+#comprehension-assessment .option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 16px;
+    background: transparent;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#comprehension-assessment .option-label:hover { 
+    border-color: var(--brand-primary); 
+    background: rgba(31,78,95,0.04); 
+}
+
+#comprehension-assessment .option-label.selected { 
+    border-color: var(--brand-primary); 
+    background: rgba(31,78,95,0.08); 
+}
+
+.option-label input[type="radio"] {
+    accent-color: var(--brand-primary);
+    margin-top: 2px;
+}
+
+/* Slightly smaller option text and fixed width for option key to stabilize alignment */
+#comprehension-assessment .option-key {
+    font-size: 0.95em;
+    color: #555;
+    min-width: 18px;
+}
+
+#comprehension-assessment .option-text {
+    font-size: 0.95em;
+}
+
+.question-navigation { 
+    display: flex; 
+    justify-content: flex-end; 
+    align-items: center; 
+    margin-top: 25px; 
+    padding-top: 0; 
+    border-top: 0; 
+}
+
+/* Two-column structure for comprehension: left (passage), right (question + options) */
+#comprehension-assessment .comprehension-quiz {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 56px;
+    align-items: flex-start;
+}
+
+#comprehension-assessment.assessment-section { 
+    padding-left: 60px; 
+    padding-right: 60px; 
+}
+
+#comprehension-assessment .comprehension-left { 
+    flex: 1 1 0; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 24px; 
+    min-width: 0; 
+}
+
+#comprehension-assessment .comprehension-right { 
+    flex: 0 0 520px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px; 
+    align-items: stretch; 
+}
+
+#comprehension-assessment .passage-section { 
+    align-self: stretch; 
+    max-width: 48vw; 
+}
+
+#comprehension-assessment .questions-section { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px; 
+}
+
+#comprehension-assessment .question-text-container { 
+    margin-bottom: 16px; 
+    min-height: 56px; /* reserve space so options start at a consistent Y */
+}
+
+#comprehension-assessment .question-text { 
+    font-size: 1.1rem; 
+    line-height: 1.4; 
+    color: #333; 
+    font-weight: 600; 
+    background: transparent !important; 
+    border: 0 !important; 
+    padding: 0 !important; 
+    margin: 0; 
+}
+
+#comprehension-assessment .question-display { 
+    width: 100%; 
+    min-height: 230px; /* keep options area height stable across questions */
+}
+
+#comprehension-assessment .question-display .options-container { 
+    width: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+}
+
+#comprehension-assessment .question-navigation { 
+    align-self: stretch; 
+    width: 100%; 
+    display: flex; 
+    justify-content: space-between; 
+    gap: 16px; 
+    margin-top: 24px; 
+    padding-top: 0; 
+    border-top: 0; 
+}
+
+/* Themed, larger navigation buttons for comprehension */
+#comprehension-assessment .nav-btn {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+    color: #ffffff;
+    border: 0;
+    padding: 12px 22px;
+    font-size: 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: 0 8px 22px rgba(22, 58, 70, 0.18);
+}
+
+#comprehension-assessment .nav-btn:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 10px 28px rgba(22, 58, 70, 0.25); 
+}
+
+#comprehension-assessment .nav-btn:active { 
+    transform: translateY(0); 
+    box-shadow: 0 6px 18px rgba(22, 58, 70, 0.18); 
+}
+
+#comprehension-assessment .nav-btn:disabled { 
+    opacity: 0.5; 
+    cursor: not-allowed; 
+    transform: none; 
+    box-shadow: none; 
+}
+
+/* Remove question number and any box styling for the question text */
+#comprehension-assessment .question-content h4 { 
+    display: none; 
+}
+
+/* Responsive: stack on tablet/mobile */
+@media (max-width: 1024px) {
+    #comprehension-assessment .comprehension-quiz { 
+        display: block; 
+    }
+    
+    #comprehension-assessment .comprehension-left { 
+        margin-bottom: 40px; 
+    }
+    
+    #comprehension-assessment .comprehension-right { 
+        flex: none; 
+    }
+    
+    #comprehension-assessment .passage-section { 
+        max-width: none; 
+    }
+    
+    #comprehension-assessment .question-navigation { 
+        justify-content: space-between; 
+        margin-top: 20px; 
+    }
+}
+
+/* Force side-by-side layout on wider screens regardless of other rules */
+@media (min-width: 700px) {
+    #comprehension-assessment .comprehension-quiz { 
+        display: flex !important; 
+        gap: 56px; 
+        align-items: flex-start; 
+    }
+    
+    #comprehension-assessment .comprehension-left { 
+        flex: 1 1 0; 
+        min-width: 0; 
+    }
+    
+    #comprehension-assessment .comprehension-right { 
+        flex: 0 0 520px; 
+        max-width: 520px; 
+    }
+}
+
+/* Keep simple flex layout for desktop - no need for complex grid */
+@media (min-width: 1025px) {
+    #comprehension-assessment .comprehension-quiz { 
+        display: flex !important; 
+        gap: 56px; 
+        align-items: flex-start; 
+    }
+    
+    #comprehension-assessment .comprehension-left { 
+        flex: 1 1 0; 
+        min-width: 0; 
+    }
+    
+    #comprehension-assessment .comprehension-right { 
+        flex: 0 0 520px; 
+    }
+}
+
+/* Hide headers and bring passage/question up to align on same line */
+#comprehension-assessment .passage-header { 
+    display: none !important; 
+}
+
+#comprehension-assessment .question-header { 
+    display: none !important; 
+}
+
+/* Remove any extra top spacing so both columns start together */
+#comprehension-assessment .passage-section { 
+    margin-top: 0 !important; 
+    padding-top: 0 !important; 
+}
+
+#comprehension-assessment .questions-section { 
+    margin-top: 0 !important; 
+    padding-top: 0 !important; 
+}
+
+#comprehension-assessment .question-text-container { 
+    margin-top: 0 !important; 
+}
+
+/* Slightly reduce top padding for the whole section */
+#comprehension-assessment.assessment-section { 
+    padding-top: 36px; 
+}

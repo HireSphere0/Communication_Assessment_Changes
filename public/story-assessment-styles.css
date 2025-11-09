@@ -1,0 +1,368 @@
+/* Story Assessment Styles */
+
+.story-player {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    grid-column: 1;
+}
+
+.story-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;                    /* slightly reduce space between columns/buttons */
+    align-items: start;
+    max-width: 1100px;           /* equal left/right margins */
+    margin: 0 auto;              /* center the two-column layout */
+    padding: 0 0 0 20px;          /* eliminate right padding to move right column closer to edge */
+}
+
+.story-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.story-side .custom-audio-controls + p {
+    margin-top: 8px;
+    margin-left: 0;
+}
+
+.story-side p {
+    margin-bottom: 20px;
+    color: #666;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.story-side .custom-audio-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.play-audio-btn {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1em;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 5px 15px rgba(31, 78, 95, 0.25);
+}
+
+.play-audio-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(31, 78, 95, 0.35);
+}
+
+.play-audio-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.play-count {
+    font-size: 0.9em;
+    color: #666;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.summary-side {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* center within the right column */
+    justify-content: center;
+}
+
+.summary-side h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+    text-align: center;
+}
+
+.summary-side p {
+    color: #666;
+    margin-bottom: 20px;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* Story audio custom controls */
+#story-play-btn { 
+    display: none; 
+}
+
+.custom-audio-controls { 
+    margin: 6px 0 8px 0;  /* slightly reduce space before Play button */
+}
+
+.custom-audio-controls .play-audio-btn {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+    color: #ffffff;
+    border: 0;
+    padding: 12px 22px;
+    font-size: 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+    margin: 0 10px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 22px rgba(22, 58, 70, 0.28);
+}
+
+.custom-audio-controls .play-audio-btn:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 10px 28px rgba(22, 58, 70, 0.35); 
+}
+
+.custom-audio-controls .play-audio-btn:active { 
+    transform: translateY(0); 
+    box-shadow: 0 6px 18px rgba(22, 58, 70, 0.28); 
+}
+
+.custom-audio-controls .play-audio-btn:focus-visible { 
+    outline: 3px solid rgba(31,78,95,0.35); 
+    outline-offset: 2px; 
+}
+
+.custom-audio-controls .play-audio-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.custom-audio-controls .play-count {
+    font-size: 0.9rem;
+    color: #495057;
+    text-align: center;
+    margin: 8px 0 0 0;
+    font-weight: 500;
+}
+
+.custom-play-btn {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+    color: #ffffff;
+    border: 0;
+    padding: 12px 22px;
+    font-size: 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+    margin: 0 10px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 22px rgba(22, 58, 70, 0.28);
+}
+
+.custom-play-btn:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 10px 28px rgba(22, 58, 70, 0.35); 
+}
+
+.custom-play-btn:active { 
+    transform: translateY(0); 
+    box-shadow: 0 6px 18px rgba(22, 58, 70, 0.28); 
+}
+
+.custom-play-btn.disabled { 
+    background: #cfd6da; 
+    color: #6b757e; 
+    cursor: not-allowed; 
+    box-shadow: none; 
+}
+
+.audio-section {
+    grid-column: 1;
+}
+
+.summary-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.summary-side h3 {
+    color: var(--brand-primary);
+    margin-bottom: 10px;
+    font-size: 1.4em;
+    text-align: center;
+}
+
+.summary-side p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.summary-side .record-btn {
+    background: var(--brand-primary);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1em;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.summary-side .record-btn:disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.summary-side .record-btn:hover:not(:disabled) {
+    background: var(--brand-primary-dark);
+    transform: translateY(-2px);
+}
+
+.summary-side .record-btn.stop-btn {
+    background: #dc3545;
+}
+
+.summary-side .record-btn.stop-btn:hover {
+    background: #c82333;
+}
+
+.summary-side .recording-status {
+    margin-top: 18px;            /* slightly more space below Start Recording */
+    color: #333;
+    display: block;              /* force to next line under the button */
+}
+
+/* Force vertical stacking and centered alignment specifically for story summary controls */
+#story-assessment .summary-side #story-summary-section {
+    display: grid;
+    grid-template-columns: 1fr;   /* single column grid */
+    justify-items: center;        /* center children horizontally */
+    width: 100%;
+    transform: translateX(30px);  /* nudge right column a bit more to balance page edges */
+}
+
+#story-assessment .summary-side #story-summary-section .recording-status {
+    display: block;               /* ensure it sits below the button */
+}
+
+/* Story feedback content styles */
+.story-feedback-content .original-story,
+.story-feedback-content .user-summary {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.story-feedback-content .original-story {
+    border-left: 4px solid #28a745;
+}
+
+.story-feedback-content .user-summary {
+    border-left: 4px solid #17a2b8;
+}
+
+.story-text, .summary-text {
+    font-style: italic;
+    margin: 10px 0;
+}
+
+.summary-side .recording-controls { 
+    width: 100%; 
+    text-align: center; 
+    align-items: center; 
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Ensure the right-column description line is perfectly centered */
+.summary-side .recording-controls p {
+    align-self: center;
+}
+
+/* Align the record button horizontally with the left Play button */
+@media (min-width: 1025px) {
+    .summary-side .recording-controls { 
+        margin-top: 0; 
+    }
+}
+
+/* Bring right column slightly up so buttons align side-by-side */
+@media (min-width: 1025px) {
+    #story-assessment .summary-side { 
+        margin-top: 0; /* align with left column */
+        transform: translateX(28px); /* shift whole right column right, margins unchanged */
+    }
+}
+
+/* Make the text blocks above each button equal height so buttons align side-by-side */
+.story-side h3 {
+    color: var(--brand-primary);
+    margin-bottom: 10px;
+    font-size: 1.4em;
+    text-align: center;
+}
+
+.story-side p:first-of-type {
+    margin-bottom: 10px;          /* reduce gap above Play button */
+    min-height: 52px;
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 1.05rem; /* larger play limit text */
+    white-space: nowrap; /* keep on one line */
+}
+
+.summary-side h3 + p {
+    margin-bottom: 16px;
+    min-height: 52px;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+@media (max-width: 1024px) {
+    .story-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .story-side, .summary-side {
+        padding: 15px;
+    }
+    
+    .summary-side .recording-controls {
+        margin-top: 0;
+    }
+    
+    #story-assessment .summary-side {
+        margin-top: 0;
+    }
+}

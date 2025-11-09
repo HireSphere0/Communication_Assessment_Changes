@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YZV45WHW9X"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-YZV45WHW9X');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Communication Assessment Suite</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Topbar -->
+        <div class="topbar">
+            <div class="brand">Skill Tesseract</div>
+            <nav class="nav-links">
+                <a href="/assessment" class="nav-link">Back</a>
+                <a href="#" class="nav-link" id="logout-link">Logout</a>
+            </nav>
+        </div>
+
+        <!-- Dashboard Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-header">
+                <div class="dashboard-title-row">
+                    <h1>Dashboard</h1>
+                </div>
+                <p class="subtitle">Manage your assessment account and view your test availability</p>
+            </div>
+
+            <!-- User Info Section -->
+            <div class="dashboard-section">
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2>Account Information</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="loading" id="user-info-loading">
+                            <div class="spinner"></div>
+                            <p>Loading account information...</p>
+                        </div>
+                        <div class="user-info" id="user-info" style="display: none;">
+                            <div class="info-item">
+                                <span class="info-label">Email:</span>
+                                <span class="info-value" id="user-email">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Username:</span>
+                                <span class="info-value" id="user-username">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Member Since:</span>
+                                <span class="info-value" id="user-created">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Last Login:</span>
+                                <span class="info-value" id="user-last-login">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Availability Section -->
+            <div class="dashboard-section">
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2>Test Availability</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="test-availability">
+                            <div class="test-count-display">
+                                <div class="test-count-circle">
+                                    <div class="test-count-number" id="test-count">--</div>
+                                    <div class="test-count-label">Tests Available</div>
+                                </div>
+                            </div>
+                            <div class="test-info-text">
+                                <p id="test-status-message">Loading test information...</p>
+                                <div class="test-actions" id="test-actions" style="display: none;">
+                                    <a href="/assessment" class="btn btn-primary" id="take-test-btn">Take Assessment</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assessment History Section -->
+            <div class="dashboard-section">
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2>Assessment History</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="assessment-scores" id="assessment-scores">
+                            <div class="loading" id="scores-loading">
+                                <div class="spinner"></div>
+                                <p>Loading assessment history...</p>
+                            </div>
+                            <div class="scores-display" id="scores-display" style="display: none;">
+                                <div class="score-item">
+                                    <span class="score-name">Overall Score</span>
+                                    <span class="score-bar">
+                                        <span class="score-fill" id="overall-score-bar"></span>
+                                    </span>
+                                    <span class="score-num" id="overall-score">--</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-name">Reading Ability</span>
+                                    <span class="score-bar">
+                                        <span class="score-fill" id="reading-score-bar"></span>
+                                    </span>
+                                    <span class="score-num" id="reading-score">--</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-name">Listening Ability</span>
+                                    <span class="score-bar">
+                                        <span class="score-fill" id="listening-score-bar"></span>
+                                    </span>
+                                    <span class="score-num" id="listening-score">--</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-name">Jumbled Sentences</span>
+                                    <span class="score-bar">
+                                        <span class="score-fill" id="jumbled-score-bar"></span>
+                                    </span>
+                                    <span class="score-num" id="jumbled-score">--</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-name">Story Summarization</span>
+                                    <span class="score-bar">
+                                        <span class="score-fill" id="story-score-bar"></span>
+                                    </span>
+                                    <span class="score-num" id="story-score">--</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-name">Personal Questions</span>
+                                    <span class="score-bar">
+                                        <span class="score-fill" id="personal-score-bar"></span>
+                                    </span>
+                                    <span class="score-num" id="personal-score">--</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-name">Reading Comprehension</span>
+                                    <span class="score-bar">
+                                        <span class="score-fill" id="comprehension-score-bar"></span>
+                                    </span>
+                                    <span class="score-num" id="comprehension-score">--</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-name">Fill in the Blanks</span>
+                                    <span class="score-bar">
+                                        <span class="score-fill" id="fillblanks-score-bar"></span>
+                                    </span>
+                                    <span class="score-num" id="fillblanks-score">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Metrics Section -->
+            <div class="dashboard-section">
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2>Test Completion History</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="single-metric-container">
+                            <!-- Test Completion History -->
+                            <div class="metric-section single-metric">
+                                <div class="loading" id="tests-loading">
+                                    <div class="spinner"></div>
+                                    <p>Loading test history...</p>
+                                </div>
+                                <div class="metric-content" id="tests-history" style="display: none;">
+                                    <div class="metric-summary" id="tests-summary">
+                                        <span class="metric-count">0</span>
+                                        <span class="metric-label">Tests Completed</span>
+                                    </div>
+                                    <div class="metric-list" id="tests-list">
+                                        <!-- Test timestamps will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="footer-brand"><small>&copy; 2025 Skill Tesseract</small></div>
+                <nav class="footer-links" aria-label="Footer">
+                    <a href="/contact" class="footer-link">Contact us</a>
+                    <a href="mailto:mockinterview014@gmail.com" class="footer-link">Email</a>
+                    <a href="https://www.linkedin.com/company/skill-tesseract/?viewAsMember=true" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+                    <a href="https://www.instagram.com/skilltesseract" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Message Container -->
+    <div id="message-container" class="message-container" style="display: none;">
+        <div id="message" class="message"></div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

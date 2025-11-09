@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication Assessment Suite</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="base-styles.css">
+    <link rel="stylesheet" href="setup-styles.css">
+    <link rel="stylesheet" href="reading-assessment-styles.css">
+    <link rel="stylesheet" href="listening-assessment-styles.css">
+    <link rel="stylesheet" href="jumbled-assessment-styles.css">
+    <link rel="stylesheet" href="story-assessment-styles.css">
+    <link rel="stylesheet" href="personal-assessment-styles.css">
+    <link rel="stylesheet" href="comprehension-assessment-styles.css">
+    <link rel="stylesheet" href="fillblanks-assessment-styles.css">
+    <link rel="stylesheet" href="results-styles.css">
+    <script src="/js/vendor/microsoft-speech-sdk.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Topbar to match home page -->
+        <div class="topbar">
+            <div class="brand">Skill Tesseract</div>
+            <nav class="nav-links">
+                <a href="/dashboard" class="nav-link" id="dashboard-link">Dashboard</a>
+                <a href="/purchase" class="nav-link" id="purchase-link">Purchase Tests</a>
+                <button id="submit-assessment-btn" class="nav-link submit-btn" style="display: none;">Submit</button>
+            </nav>
+        </div>
+
+        <!-- Welcome Section -->
+        <div class="welcome-section" id="welcome-section">
+            <div class="home overview-left">
+                <header class="home-header centered">
+                    <h1>Assessment Overview</h1>
+                    <p class="subtitle">This comprehensive assessment evaluates your communication skills across
+                        multiple dimensions</p>
+                </header>
+
+                <section class="rounds-stack" aria-label="Assessment rounds">
+                    <div class="round-row">
+                        <span class="round-index">01</span>
+                        <span class="round-title">Reading Ability</span>
+                        <span class="round-desc">Pronunciation assessment of generated text</span>
+                    </div>
+                    <div class="round-row">
+                        <span class="round-index">02</span>
+                        <span class="round-title">Listening Ability</span>
+                        <span class="round-desc">Listen and repeat assessment</span>
+                    </div>
+                    <div class="round-row">
+                        <span class="round-index">03</span>
+                        <span class="round-title">Jumbled Sentences</span>
+                        <span class="round-desc">Reconstruct scrambled sentences</span>
+                    </div>
+                    <div class="round-row">
+                        <span class="round-index">04</span>
+                        <span class="round-title">Story Summarization</span>
+                        <span class="round-desc">Listen to AI-generated stories and summarize</span>
+                    </div>
+                    <div class="round-row">
+                        <span class="round-index">05</span>
+                        <span class="round-title">Personal Questions</span>
+                        <span class="round-desc">AI interview questions with detailed feedback</span>
+                    </div>
+                    <div class="round-row">
+                        <span class="round-index">06</span>
+                        <span class="round-title">Reading Comprehension</span>
+                        <span class="round-desc">AI-generated passages with comprehension questions</span>
+                    </div>
+                    <div class="round-row">
+                        <span class="round-index">07</span>
+                        <span class="round-title">Fill in the Blanks</span>
+                        <span class="round-desc">Grammar-based fill-in-the-blanks questions</span>
+                    </div>
+                </section>
+
+                <div class="test-info" id="test-info" style="margin-bottom: 20px; text-align: center;">
+                    <div class="loading" id="test-info-loading">
+                        <div class="spinner"></div>
+                        <p>Loading user information...</p>
+                    </div>
+                    <div id="test-count-display" style="display: none;">
+                        <p class="test-count-text">Tests Available: <span id="test-count"
+                                class="test-count-number">0</span></p>
+                    </div>
+                </div>
+
+                <div class="home-cta">
+                    <button id="start-assessment" class="btn btn-primary" disabled>Start Assessment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pre-Assessment Setup Screen -->
+        <div class="setup-section" id="setup-section" style="display: none;">
+            <div class="setup-container">
+                <header class="setup-header">
+                    <h1>Assessment Setup & Requirements</h1>
+                    <p class="setup-subtitle">Please ensure your system meets all requirements before starting</p>
+                </header>
+
+                <div class="setup-checks">
+                    <div class="setup-check-item" id="browser-check">
+                        <div class="check-icon" id="browser-icon">⏳</div>
+                        <div class="check-content">
+                            <h3>Browser Compatibility</h3>
+                            <p>Checking if you're using a supported browser (Chrome recommended)</p>
+                            <div class="check-status" id="browser-status">Checking...</div>
+                        </div>
+                    </div>
+
+                    <div class="setup-check-item" id="microphone-check">
+                        <div class="check-icon" id="mic-icon">⏳</div>
+                        <div class="check-content">
+                            <h3>Microphone Access & Status</h3>
+                            <p>Testing microphone permissions and ensuring it's not muted</p>
+                            <div class="check-status" id="mic-status">Checking...</div>
+                            <button id="test-mic-btn" class="test-btn" style="display: none;">Test Microphone</button>
+                            <button id="try-again-mic-btn" class="test-btn" style="display: none; margin-left: 10px;">Try Again</button>
+                        </div>
+                    </div>
+
+                    <div class="setup-check-item" id="audio-check">
+                        <div class="check-icon" id="audio-icon">⏳</div>
+                        <div class="check-content">
+                            <h3>Audio Playback</h3>
+                            <p>Testing audio playback for listening assessments</p>
+                            <div class="check-status" id="audio-status">Checking...</div>
+                            <button id="test-audio-btn" class="test-btn" style="display: none;">Test Audio</button>
+                        </div>
+                    </div>
+
+                    <div class="setup-check-item" id="connection-check">
+                        <div class="check-icon" id="connection-icon">⏳</div>
+                        <div class="check-content">
+                            <h3>Internet Connection</h3>
+                            <p>Verifying stable internet connection</p>
+                            <div class="check-status" id="connection-status">Checking...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-warnings">
+                    <div class="warning-box">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-content">
+                            <h3>Important Instructions</h3>
+                            <ul>
+                                <li><strong>Do NOT reload the page</strong> - Reloading will result in the loss of your
+                                    test progress</li>
+                                <li><strong>Do NOT navigate away</strong> - Stay on this page throughout the assessment
+                                </li>
+                                <li><strong>Ensure stable internet</strong> - Poor connection may affect your results
+                                </li>
+                                <li><strong>Ensure microphone is unmuted</strong> - Your microphone must be unmuted to start the assessment</li>
+                                <li><strong>Use headphones</strong> - Recommended for better audio quality</li>
+                                <li><strong>Find a quiet environment</strong> - Minimize background noise</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-info-setup" style="margin: 20px 0; text-align: center;">
+                    <p class="test-count-text">Tests Remaining: <span id="test-count-setup"
+                            class="test-count-number">0</span></p>
+                </div>
+
+                <div class="setup-actions">
+                    <button id="back-to-overview" class="btn btn-secondary">← Back to Overview</button>
+                    <button id="start-assessment-final" class="btn btn-primary" disabled>Start Assessment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessment Navigation -->
+        <div class="assessment-nav" id="assessment-nav" style="display: none;">
+            <div class="progress-container">
+                <div id="question-indicator" class="question-indicator" aria-label="Question navigation"></div>
+                <div class="progress-bar" style="display:none;">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Timer Display -->
+            <div class="timer-container" id="timer-container">
+                <div class="timer-icon"></div>
+                <div class="timer-display">
+                    <div class="timer-label">Time Remaining</div>
+                    <div class="timer-value" id="timer-value">30:00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessment Sections -->
+
+        <!-- Reading Ability Assessment -->
+        <div class="assessment-section" id="reading-assessment" style="display: none;">
+            <div class="assessment-header">
+                <h2>Reading Ability Assessment</h2>
+                <p>Read the generated sentence aloud for pronunciation evaluation</p>
+            </div>
+
+            <div class="assessment-content">
+                <div class="sentence-display">
+                    <div class="loading" id="reading-loading">
+                        <div class="spinner"></div>
+                        <p>Generating sentence...</p>
+                    </div>
+                    <div class="sentence-text" id="reading-sentence" style="display: none;"></div>
+                </div>
+
+                <div class="recording-controls" id="reading-controls" style="display: none;">
+                    <button id="reading-record-btn" class="record-btn">🎙 Start Recording</button>
+                    <div class="recording-status" id="reading-status"></div>
+                    <button id="reading-stop-btn" class="record-btn stop-btn" style="display: none;">Stop</button>
+                </div>
+
+                <div class="results-display" id="reading-results" style="display: none;">
+                    <!-- Results hidden - scores shown at end -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Listening Ability Assessment -->
+        <div class="assessment-section" id="listening-assessment" style="display: none;">
+            <div class="assessment-header">
+                <h2>Listening Ability Assessment</h2>
+                <p>Listen to the audio and repeat what you hear</p>
+            </div>
+
+            <div class="assessment-content">
+                <div class="audio-section">
+                    <div class="loading" id="listening-loading">
+                        <div class="spinner"></div>
+                        <p>Generating audio...</p>
+                    </div>
+                    <div class="audio-player" id="listening-player" style="display: none;">
+                        <audio id="listening-audio" controls></audio>
+                    </div>
+                </div>
+
+                <div class="recording-controls" id="listening-controls" style="display: none;">
+                    <button id="listening-record-btn" class="record-btn">🎙 Start Recording</button>
+                    <div class="recording-status" id="listening-status"></div>
+                    <button id="listening-stop-btn" class="record-btn stop-btn" style="display: none;">Stop</button>
+                </div>
+
+                <div class="results-display" id="listening-results" style="display: none;">
+                    <!-- Results hidden - scores shown at end -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Jumbled Sentences Assessment -->
+        <div class="assessment-section" id="jumbled-assessment" style="display: none;">
+            <div class="assessment-header">
+                <h2>Jumbled Sentences Assessment</h2>
+                <p>Rearrange the jumbled words to form correct sentences</p>
+            </div>
+
+            <div class="assessment-content">
+                <div class="loading" id="jumbled-loading">
+                    <div class="spinner"></div>
+                    <p>Generating jumbled sentences...</p>
+                </div>
+
+                <div class="jumbled-game" id="jumbled-game" style="display: none;">
+                    <div class="jumbled-layout">
+                        <div class="question-side">
+                            <div class="jumbled-sentence" id="jumbled-sentence"></div>
+                        </div>
+
+                        <div class="answer-side">
+                            <div class="answer-section">
+                                <input type="text" id="jumbled-answer"
+                                    placeholder="Type the correct sentence here..." />
+                                <button id="jumbled-submit" class="submit-btn">Submit Answer</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="jumbled-feedback" id="jumbled-feedback"></div>
+                </div>
+
+                <div class="results-display" id="jumbled-results" style="display: none;">
+                    <!-- Results hidden - scores shown at end -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Summarization Assessment -->
+        <div class="assessment-section" id="story-assessment" style="display: none;">
+            <div class="assessment-header">
+                <h2>Story Summarization Assessment</h2>
+                <p>Listen to an AI-generated story and provide a clear summary</p>
+            </div>
+
+            <div class="assessment-content">
+                <div class="loading" id="story-loading">
+                    <div class="spinner"></div>
+                    <p>Generating story and audio...</p>
+                </div>
+
+                <div class="story-player" id="story-player" style="display: none;">
+                    <div class="story-layout">
+                        <div class="story-side">
+                            <h3>Listen to the Audio</h3>
+                            <p>You can play the audio up to 2 times.</p>
+                            <button id="story-play-btn" class="play-audio-btn">Play Audio</button>
+                            <audio id="story-audio" style="display:none;"></audio>
+                            <p>Plays remaining: <span id="story-play-count">2</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-side">
+                    <div class="recording-controls" id="story-summary-section">
+                        <h3>Record Your Summary</h3>
+                        <p>Summarize the story in your own words.</p>
+                        <button id="story-record-btn" class="record-btn" disabled>Start Recording Summary</button>
+                        <div class="recording-status" id="story-status">Please listen to the audio before recording
+                        </div>
+                        <button id="story-stop-btn" class="record-btn stop-btn" style="display: none;">Stop</button>
+                    </div>
+                </div>
+
+                <div class="results-display" id="story-results" style="display: none;">
+                    <!-- Results hidden - scores shown at end -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Questions Assessment -->
+        <div class="assessment-section" id="personal-assessment" style="display: none;">
+            <div class="assessment-header">
+                <h2>Personal Questions Assessment</h2>
+                <p>Answer AI-generated interview questions with detailed feedback</p>
+            </div>
+
+            <div class="assessment-content">
+                <div class="loading" id="personal-loading">
+                    <div class="spinner"></div>
+                    <p>Generating interview question...</p>
+                </div>
+
+                <div class="question-display" id="personal-question-display" style="display: none;">
+                    <div class="personal-layout">
+                        <div class="personal-left">
+                            <div class="interview-question" id="personal-question-container" style="display: none;">
+                                <div class="question-meta">
+                                    <span class="difficulty-badge" id="personal-difficulty-badge">Medium</span>
+                                    <span class="category-badge" id="personal-category-badge">General</span>
+                                </div>
+                                <div class="question-text" id="personal-question-text"></div>
+                            </div>
+                        </div>
+                        <div class="personal-right">
+                            <div class="response-section">
+                                <div class="response-instructions">
+                                    <h4>Your Response:</h4>
+                                    <p>Take a moment to think, then record your answer. Aim for 30-90 seconds.</p>
+                                </div>
+                                <div class="recording-controls">
+                                    <button id="personal-record-btn" class="record-btn">Start Recording</button>
+                                    <div class="recording-status" id="personal-status"></div>
+                                    <button id="personal-stop-btn" class="record-btn stop-btn"
+                                        style="display: none;">Stop</button>
+                                </div>
+                                <div class="recording-timer" id="personal-timer"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-display" id="personal-results" style="display: none;">
+                    <!-- Results hidden - scores shown at end -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Reading Comprehension Assessment -->
+        <div class="assessment-section" id="comprehension-assessment" style="display: none;">
+            <div class="assessment-header">
+                <h2>Reading Comprehension Assessment</h2>
+                <p>Read AI-generated passages and answer comprehension questions</p>
+            </div>
+
+            <div class="assessment-content">
+                <div class="loading" id="comprehension-loading">
+                    <div class="spinner"></div>
+                    <p>Generating reading comprehension content...</p>
+                </div>
+
+                <div class="comprehension-setup" id="comprehension-setup" style="display: none;">
+                    <div class="auto-generation-message">
+                        <p>🎲 Generating a random reading comprehension test...</p>
+                    </div>
+                </div>
+
+                <div class="comprehension-quiz" id="comprehension-quiz" style="display: none;">
+                    <div class="comprehension-left">
+                        <div class="passage-section">
+                            <div class="passage-header">
+                                <h3>Reading Passage</h3>
+                                <div class="passage-meta">
+                                    <span class="topic-badge" id="comprehension-topic-badge">Technology</span>
+                                    <span class="difficulty-badge"
+                                        id="comprehension-difficulty-badge">Intermediate</span>
+                                </div>
+                            </div>
+                            <div class="passage-content" id="comprehension-passage"></div>
+                        </div>
+                    </div>
+
+                    <div class="comprehension-right">
+                        <div class="questions-section" id="comprehension-questions-section">
+                            <div class="question-header">
+                                <h3>Comprehension Questions</h3>
+                                <div class="question-progress">
+                                    Question <span id="comprehension-current-q">1</span> of <span
+                                        id="comprehension-total-q">5</span>
+                                </div>
+                            </div>
+
+                            <!-- Question prompt now lives in the right column above options -->
+                            <div class="question-text-container">
+                                <p class="question-text" id="comprehension-question-prompt"></p>
+                            </div>
+
+                            <div class="question-display" id="comprehension-question-display">
+                                <!-- Dynamic options content -->
+                            </div>
+
+                            <div class="question-navigation">
+                                <button id="comprehension-prev-btn" class="nav-btn" disabled>← Previous</button>
+                                <button id="comprehension-next-btn" class="nav-btn">Next →</button>
+                                <button id="comprehension-submit-btn" class="submit-btn" style="display: none;">Submit
+                                    Quiz</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-display" id="comprehension-results" style="display: none;">
+                    <!-- Results hidden - scores shown at end -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Fill in the Blanks Assessment -->
+        <div class="assessment-section" id="fillblanks-assessment" style="display: none;">
+            <div class="assessment-header">
+                <h2>Fill in the Blanks Assessment</h2>
+                <p>Complete sentences with appropriate grammar and vocabulary</p>
+            </div>
+
+            <div class="assessment-content">
+                <div class="loading" id="fillblanks-loading">
+                    <div class="spinner"></div>
+                    <p>Generating fill-in-the-blanks questions...</p>
+                </div>
+
+                <div class="fillblanks-instructions" id="fillblanks-instructions" style="display: none;">
+                    <div class="instructions-content">
+                        <h3>Fill in the Blanks Instructions</h3>
+                        <p>You will be presented with 10 grammar-based questions. Choose the best option to complete
+                            each sentence.</p>
+                        <ul>
+                            <li>Each question has 3 multiple-choice options</li>
+                            <li>Focus on grammar, verb forms, tenses, articles, and prepositions</li>
+                            <li>You can navigate between questions before submitting</li>
+                            <li>Take your time to read each sentence carefully</li>
+                        </ul>
+                        <button id="fillblanks-start-btn" class="start-btn">Start Assessment</button>
+                    </div>
+                </div>
+
+                <div class="fillblanks-quiz" id="fillblanks-quiz" style="display: none;">
+                    <div class="question-progress">
+                        Question <span id="fillblanks-current">1</span> of <span id="fillblanks-total">10</span>
+                    </div>
+
+                    <div class="question-container" id="fillblanks-question-container">
+                        <!-- Dynamic question content -->
+                    </div>
+
+                    <div class="quiz-navigation">
+                        <button id="fillblanks-prev-btn" class="nav-btn" disabled>← Previous</button>
+                        <button id="fillblanks-next-btn" class="nav-btn">Next →</button>
+                        <button id="fillblanks-submit-btn" class="submit-btn" style="display: none;">Submit
+                            Quiz</button>
+                    </div>
+
+                    <div class="progress-indicator">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="fillblanks-progress"></div>
+                        </div>
+                        <div class="answered-count">
+                            <span id="fillblanks-answered">0</span> of <span id="fillblanks-total-questions">10</span>
+                            answered
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-display" id="fillblanks-results" style="display: none;">
+                    <!-- Results hidden - scores shown at end -->
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="footer-brand"><small>&copy; 2025 Skill Tesseract</small></div>
+                <nav class="footer-links" aria-label="Footer">
+                    <a href="/contact" class="footer-link">Contact us</a>
+                    <a href="mailto:mockinterview014@gmail.com" class="footer-link">Email</a>
+                    <a href="https://www.linkedin.com/company/skill-tesseract/?viewAsMember=true" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+                    <a href="https://www.instagram.com/skilltesseract" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+
+    <script src="setup-assessment.js"></script>
+    <script src="main.js"></script>
+    <script src="reading-assessment.js"></script>
+    <script src="listening-assessment.js"></script>
+    <script src="jumbled-assessment.js"></script>
+    <script src="story-assessment.js"></script>
+    <script src="personal-assessment.js"></script>
+    <script src="comprehension-assessment.js"></script>
+    <script src="fillblanks-assessment.js"></script>
+</body>
+
+</html>

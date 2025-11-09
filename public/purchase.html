@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YZV45WHW9X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-YZV45WHW9X');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Tests - Communication Assessment Suite</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  <link rel="stylesheet" href="purchase.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="brand">Skill Tesseract</div>
+      <nav class="nav-links">
+        <a href="/assessment" class="nav-link">Back</a>
+        <a href="#" class="nav-link" id="logout-link">Logout</a>
+      </nav>
+    </div>
+
+    <main class="dashboard-main">
+      <div class="dashboard-header">
+        <h1>Purchase Tests</h1>
+        <p class="subtitle">Buy assessments for your account</p>
+      </div>
+
+      <div class="dashboard-section">
+        <div class="section-card">
+          <div class="card-content">
+            <div class="pricing-grid">
+              <div class="pricing-card" data-tests="1" data-amount="59">
+                <div class="pricing-card-header">
+                  <h3>Starter</h3>
+                  <span class="badge">New</span>
+                </div>
+                <div class="price-container">
+                  <div class="price-original">₹99</div>
+                  <div class="price">₹59</div>
+                  <div class="price-note">1 test</div>
+                </div>
+
+                <button class="btn btn-primary btn-purchase" data-plan="Starter" data-tests="1" data-amount="59">Purchase
+                  Now</button>
+              </div>
+
+              <div class="pricing-card" data-tests="5" data-amount="249">
+                <div class="pricing-card-header">
+                  <h3>Most Popular</h3>
+                  <span class="badge best">Best Value</span>
+                </div>
+                <div class="price-container">
+                  <div class="price-original">₹399</div>
+                  <div class="price">₹249</div>
+                  <div class="price-note">5 tests</div>
+                </div>
+
+                <button class="btn btn-primary btn-purchase" data-plan="Popular" data-tests="5"
+                  data-amount="249">Purchase Now</button>
+              </div>
+
+              <div class="pricing-card" data-tests="10" data-amount="479">
+                <div class="pricing-card-header">
+                  <h3>Pro</h3>
+                  <span class="badge">Save More</span>
+                </div>
+                <div class="price-container">
+                  <div class="price-original">₹699</div>
+                  <div class="price">₹479</div>
+                  <div class="price-note">10 tests</div>
+                </div>
+
+                <button class="btn btn-primary btn-purchase" data-plan="Pro" data-tests="10" data-amount="479">Purchase
+                  Now</button>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-brand"><small>&copy; 2025 Skill Tesseract</small></div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="/contact" class="footer-link">Contact us</a>
+          <a href="mailto:mockinterview014@gmail.com" class="footer-link">Email</a>
+          <a href="https://www.linkedin.com/company/skill-tesseract/?viewAsMember=true" target="_blank" rel="noopener"
+            class="footer-link">LinkedIn</a>
+          <a href="https://www.instagram.com/skilltesseract" target="_blank" rel="noopener"
+            class="footer-link">Instagram</a>
+        </nav>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Razorpay Checkout Script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <script>
+    // Reuse logout handler pattern
+    document.addEventListener('DOMContentLoaded', () => {
+      const logout = async () => {
+        try {
+          const response = await fetch('/api/auth/logout', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+          if (response.ok) { window.location.href = '/'; } else { alert('Logout failed.'); }
+        } catch (e) { console.error(e); alert('Logout failed.'); }
+      };
+      const link = document.getElementById('logout-link');
+      if (link) link.addEventListener('click', (e) => { e.preventDefault(); logout(); });
+
+      // Enhanced checkout modal with customer details form
+      const showCheckoutModal = async ({ plan, tests, amount }) => {
+        // Fetch user profile to pre-fill email
+        let userEmail = '';
+        try {
+          const profileResponse = await fetch('/api/user/profile');
+          if (profileResponse.ok) {
+            const profileData = await profileResponse.json();
+            userEmail = profileData.user.email;
+          }
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+        }
+        const overlay = document.createElement('div');
+        overlay.className = 'purchase-modal-overlay';
+        overlay.innerHTML = `
+            <div class="purchase-modal">
+              <div class="purchase-modal-header">
+                <h3>Checkout - ${plan} Plan</h3>
+                <button class="modal-close" aria-label="Close">×</button>
+              </div>
+              <div class="purchase-modal-body">
+                <div class="summary-section">
+                  <h4>Order Summary</h4>
+                  <div class="summary-row">
+                    <div class="summary-label">Plan</div>
+                    <div class="summary-value">${plan}</div>
+                  </div>
+                  <div class="summary-row">
+                    <div class="summary-label">Tests</div>
+                    <div class="summary-value">${tests}</div>
+                  </div>
+                  <div class="summary-row total">
+                    <div class="summary-label">Total</div>
+                    <div class="summary-value">₹${amount}</div>
+                  </div>
+                </div>
+                
+                <div class="customer-details-section">
+                  <h4>Customer Details</h4>
+                  <div class="form-group">
+                    <label for="customer-name">Full Name *</label>
+                    <input type="text" id="customer-name" class="form-input" placeholder="Enter your full name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="customer-email">Email Address *</label>
+                    <input type="email" id="customer-email" class="form-input" placeholder="Enter your email address" value="${userEmail}" required readonly>
+                  </div>
+                  <div class="form-group">
+                    <label for="customer-phone">Phone Number *</label>
+                    <input type="tel" id="customer-phone" class="form-input" placeholder="Enter your phone number" required>
+                  </div>
+                </div>
+                
+                <div id="payment-status" class="payment-status" style="display: none;"></div>
+              </div>
+              <div class="purchase-modal-footer">
+                <button class="btn btn-secondary modal-cancel">Cancel</button>
+                <button class="btn btn-primary" id="proceed-payment">Proceed to Payment</button>
+              </div>
+            </div>`;
+
+        const close = () => overlay.remove();
+        overlay.addEventListener('click', (ev) => { if (ev.target === overlay) close(); });
+        overlay.querySelector('.modal-close').addEventListener('click', close);
+        overlay.querySelector('.modal-cancel').addEventListener('click', close);
+
+        // Handle payment process
+        const proceedBtn = overlay.querySelector('#proceed-payment');
+        const nameInput = overlay.querySelector('#customer-name');
+        const emailInput = overlay.querySelector('#customer-email');
+        const phoneInput = overlay.querySelector('#customer-phone');
+        const statusDiv = overlay.querySelector('#payment-status');
+
+        const showStatus = (message, type = 'info') => {
+          statusDiv.style.display = 'block';
+          statusDiv.className = `payment-status ${type}`;
+          statusDiv.textContent = message;
+        };
+
+        const hideStatus = () => {
+          statusDiv.style.display = 'none';
+        };
+
+        proceedBtn.addEventListener('click', async () => {
+          const customerName = nameInput.value.trim();
+          const customerEmail = emailInput.value.trim();
+          const customerPhone = phoneInput.value.trim();
+
+          if (!customerName) {
+            showStatus('Please enter your full name', 'error');
+            nameInput.focus();
+            return;
+          }
+
+          if (!customerEmail) {
+            showStatus('Please enter your email address', 'error');
+            emailInput.focus();
+            return;
+          }
+
+          if (!customerPhone) {
+            showStatus('Please enter your phone number', 'error');
+            phoneInput.focus();
+            return;
+          }
+
+          // Basic email validation
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(customerEmail)) {
+            showStatus('Please enter a valid email address', 'error');
+            emailInput.focus();
+            return;
+          }
+
+          // Basic phone validation (10 digits, can have spaces, dashes, or parentheses)
+          const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,15}$/;
+          if (!phoneRegex.test(customerPhone)) {
+            showStatus('Please enter a valid phone number', 'error');
+            phoneInput.focus();
+            return;
+          }
+
+          hideStatus();
+          proceedBtn.disabled = true;
+          proceedBtn.textContent = 'Processing...';
+
+          try {
+            // Create Razorpay order
+            const orderResponse = await fetch('/api/payment/create-order', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                amount: parseInt(amount),
+                planName: plan,
+                testsCount: parseInt(tests),
+                customerName,
+                customerEmail,
+                customerPhone
+              })
+            });
+
+            if (!orderResponse.ok) {
+              const errorData = await orderResponse.json();
+              throw new Error(errorData.error || 'Failed to create payment order');
+            }
+
+            const orderData = await orderResponse.json();
+            console.log('Payment order created:', orderData);
+
+            // Configure Razorpay options
+            const options = {
+              key: orderData.key,
+              amount: orderData.amount,
+              currency: orderData.currency,
+              name: 'Skill Tesseract',
+              description: `${plan} Plan - ${tests} Tests`,
+              order_id: orderData.orderId,
+              prefill: {
+                name: customerName,
+                email: customerEmail,
+                contact: customerPhone
+              },
+              theme: {
+                color: '#1f4e5f'
+              },
+              config: {
+                display: {
+                  blocks: {
+                    banks: {
+                      name: 'Pay using ' + orderData.currency,
+                      instruments: [
+                        {
+                          method: 'card'
+                        },
+                        {
+                          method: 'netbanking'
+                        },
+                        {
+                          method: 'wallet'
+                        },
+                        {
+                          method: 'upi'
+                        }
+                      ]
+                    }
+                  },
+                  hide: [
+                    {
+                      method: 'paylater'
+                    }
+                  ],
+                  preferences: {
+                    show_default_blocks: true
+                  }
+                }
+              },
+              handler: async function (response) {
+                console.log('Payment successful:', response);
+                showStatus('Verifying payment...', 'info');
+
+                try {
+                  // Verify payment on server
+                  const verifyResponse = await fetch('/api/payment/verify', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      razorpay_order_id: response.razorpay_order_id,
+                      razorpay_payment_id: response.razorpay_payment_id,
+                      razorpay_signature: response.razorpay_signature
+                    })
+                  });
+
+                  const verifyData = await verifyResponse.json();
+
+                  if (verifyResponse.ok && verifyData.success) {
+                    showStatus(verifyData.message, 'success');
+
+                    // Track successful purchase in Google Analytics
+                    gtag('event', 'purchase', {
+                      transaction_id: response.razorpay_payment_id,
+                      value: parseFloat(amount),
+                      currency: 'INR',
+                      items: [{
+                        item_id: plan.toLowerCase(),
+                        item_name: `${plan} Plan`,
+                        category: 'Assessment Tests',
+                        quantity: 1,
+                        price: parseFloat(amount)
+                      }]
+                    });
+
+                    // Also track as a custom conversion event
+                    gtag('event', 'successful_purchase', {
+                      event_category: 'ecommerce',
+                      event_label: `${plan} - ${tests} tests`,
+                      value: parseFloat(amount),
+                      custom_parameters: {
+                        plan_type: plan,
+                        tests_count: parseInt(tests),
+                        amount_inr: parseFloat(amount)
+                      }
+                    });
+
+                    setTimeout(() => {
+                      close();
+                      // Redirect to assessment page after successful payment
+                      window.location.href = '/assessment';
+                    }, 3000);
+                  } else {
+                    throw new Error(verifyData.error || 'Payment verification failed');
+                  }
+
+                } catch (error) {
+                  console.error('Payment verification error:', error);
+                  showStatus('Payment verification failed. Please contact support.', 'error');
+                }
+              },
+              modal: {
+                ondismiss: function () {
+                  proceedBtn.disabled = false;
+                  proceedBtn.textContent = 'Proceed to Payment';
+                  console.log('Payment modal closed');
+                }
+              }
+            };
+
+            // Open Razorpay checkout
+            const rzp = new Razorpay(options);
+            rzp.open();
+
+          } catch (error) {
+            console.error('Payment initiation error:', error);
+            showStatus(error.message || 'Failed to initiate payment', 'error');
+            proceedBtn.disabled = false;
+            proceedBtn.textContent = 'Proceed to Payment';
+          }
+        });
+
+        document.body.appendChild(overlay);
+        nameInput.focus();
+      };
+
+      document.querySelectorAll('.btn-purchase').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const plan = btn.getAttribute('data-plan');
+          const tests = btn.getAttribute('data-tests');
+          const amount = btn.getAttribute('data-amount');
+          await showCheckoutModal({ plan, tests, amount });
+        });
+      });
+    });
+  </script>
+
+  <style>
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 6px auto 8px;
+    }
+
+    .pricing-card {
+      background: #ffffff;
+      border: 1px solid rgba(31, 78, 95, 0.12);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 24px rgba(31, 78, 95, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: stretch;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--brand-primary);
+      box-shadow: 0 14px 34px rgba(22, 58, 70, 0.16);
+    }
+
+    .pricing-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pricing-card-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--brand-ink);
+    }
+
+    .badge {
+      background: rgba(31, 78, 95, 0.08);
+      color: var(--brand-primary);
+      border: 1px solid rgba(31, 78, 95, 0.18);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .badge.best {
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .price-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .price-original {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #64748b;
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+    }
+
+    .price {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--brand-ink), var(--brand-primary-dark));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
+    }
+
+    .price-note {
+      color: #334155;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      padding: 0;
+      margin: 4px 0 8px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #384457;
+    }
+
+    .pricing-features li::before {
+      content: "✔";
+      color: var(--brand-primary);
+      font-weight: 900;
+    }
+
+    .btn-purchase {
+      width: 100%;
+    }
+
+    /* .purchase-footer removed */
+
+    /* Modal styles (scoped) */
+    .purchase-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      backdrop-filter: blur(3px);
+    }
+
+    .purchase-modal {
+      background: #ffffff;
+      border-radius: 12px;
+      width: 92%;
+      max-width: 520px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .purchase-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--brand-primary);
+      color: #ffffff;
+    }
+
+    .purchase-modal-header h3 {
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .purchase-modal-body {
+      padding: 18px 20px;
+    }
+
+    /* Summary section */
+    .summary-section {
+      margin-bottom: 20px;
+    }
+
+    .summary-section h4 {
+      margin: 0 0 12px 0;
+      color: #223046;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      padding: 8px 0;
+      border-bottom: 1px dashed rgba(31, 78, 95, 0.18);
+    }
+
+    .summary-row.total {
+      border-bottom: 0;
+      font-weight: 800;
+    }
+
+    .summary-label {
+      color: #223046;
+    }
+
+    .summary-value {
+      color: var(--brand-primary);
+      font-weight: 700;
+    }
+
+    /* Customer details section */
+    .customer-details-section {
+      margin-bottom: 20px;
+    }
+
+    .customer-details-section h4 {
+      margin: 0 0 12px 0;
+      color: #223046;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      color: #223046;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid rgba(31, 78, 95, 0.25);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(31, 78, 95, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: #94a3b8;
+    }
+
+    .form-input[readonly] {
+      background-color: #f8f9fa;
+      color: #6c757d;
+      cursor: not-allowed;
+    }
+
+    /* Payment status */
+    .payment-status {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .payment-status.info {
+      background: #e0f2fe;
+      color: #0277bd;
+      border: 1px solid #81d4fa;
+    }
+
+    .payment-status.success {
+      background: #e8f5e8;
+      color: #2e7d32;
+      border: 1px solid #81c784;
+    }
+
+    .payment-status.error {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ef9a9a;
+    }
+
+    .muted-note {
+      margin-top: 12px;
+      color: #5a6a82;
+      font-size: 0.9rem;
+    }
+
+    .purchase-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 16px 20px;
+      background: #f8f9fa;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .price {
+        font-size: 1.8rem;
+      }
+    }
+
+    /* Purchase page: remove outer container box around pricing grid */
+    .dashboard-section .section-card {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .dashboard-section .card-content {
+      padding: 0;
+    }
+  </style>
+</body>
+
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Communication Assessment Suite</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <link rel="stylesheet" href="/auth-styles.css">
+    <style>
+        .admin-panel {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .admin-section {
+            background: rgba(255,255,255,0.95);
+            border: 1px solid rgba(31,78,95,0.15);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(31,78,95,0.08);
+        }
+        .admin-section h2 {
+            color: var(--brand-ink);
+            margin-bottom: 16px;
+        }
+        .form-row {
+            display: flex;
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 16px;
+        }
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        .users-list {
+            max-height: 600px;
+            overflow-y: auto;
+            border: 1px solid #e1e6ef;
+            border-radius: 8px;
+        }
+        .user-item {
+            display: block;
+            padding: 16px;
+            border-bottom: 1px solid #f0f4f8;
+            transition: background-color 0.2s;
+        }
+        .user-item:hover {
+            background-color: #f8f9fa;
+        }
+        .user-item:last-child {
+            border-bottom: none;
+        }
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .user-info {
+            flex: 1;
+        }
+        .user-email {
+            font-weight: 600;
+            color: var(--brand-ink);
+            font-size: 1rem;
+        }
+        .user-username {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 2px;
+        }
+        .user-stats {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .user-tests {
+            background: var(--brand-primary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .user-taken {
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .user-score {
+            background: #ffc107;
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .user-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e9ecef;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-label {
+            font-size: 0.8rem;
+            color: #6c757d;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .detail-value {
+            font-size: 0.9rem;
+            color: var(--brand-ink);
+            font-weight: 600;
+        }
+        .detail-value.not-available {
+            color: #6c757d;
+            font-style: italic;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <div class="brand">Admin Panel - Skill Tesseract</div>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="#" id="admin-logout-link" class="nav-link">Logout</a>
+            </nav>
+        </div>
+
+        <div class="admin-panel">
+            <div class="admin-section">
+                <h2>Add Tests to User</h2>
+                <form id="add-tests-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="user-email">Email</label>
+                            <input type="email" id="user-email" name="email" placeholder="user@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="user-username">Username</label>
+                            <input type="text" id="user-username" name="username" placeholder="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="test-count">Tests to Add</label>
+                            <input type="number" id="test-count" name="tests" min="1" max="100" value="1" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Add Tests</button>
+                        </div>
+                    </div>
+                </form>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 8px;">
+                    Enter either email OR username (not both). Leave one field empty.
+                </p>
+            </div>
+
+            <div class="admin-section">
+                <h2>All Users</h2>
+                <button id="refresh-users" class="btn btn-secondary" style="margin-bottom: 16px;">Refresh List</button>
+                <div class="users-list" id="users-list">
+                    <div class="loading" style="padding: 20px; text-align: center;">
+                        <div class="spinner"></div>
+                        <p>Loading users...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="footer-brand"><small>&copy; 2025 Skill Tesseract - Admin Panel</small></div>
+                <nav class="footer-links" aria-label="Footer">
+                    <a href="/contact" class="footer-link">Contact us</a>
+                    <a href="mailto:mockinterview014@gmail.com" class="footer-link">Email</a>
+                    <a href="https://www.linkedin.com/company/skill-tesseract/?viewAsMember=true" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+                    <a href="https://www.instagram.com/skilltesseract" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Message Container -->
+    <div id="message-container" class="message-container" style="display: none;">
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        class AdminController {
+            constructor() {
+                this.initializeEventListeners();
+                this.checkAuthentication();
+            }
+
+            initializeEventListeners() {
+                document.getElementById('add-tests-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.addTests();
+                });
+
+                document.getElementById('refresh-users').addEventListener('click', () => {
+                    this.loadUsers();
+                });
+
+                document.getElementById('admin-logout-link').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.logout();
+                });
+            }
+
+            async checkAuthentication() {
+                try {
+                    const response = await fetch('/api/admin/me');
+                    if (response.ok) {
+                        const adminData = await response.json();
+                        console.log('Admin authenticated:', adminData.username);
+                        this.loadUsers();
+                    } else {
+                        // Not authenticated, redirect to login
+                        window.location.href = '/admin/login?message=Please%20log%20in%20to%20access%20admin%20panel&type=info';
+                    }
+                } catch (error) {
+                    console.error('Authentication check failed:', error);
+                    window.location.href = '/admin/login?message=Authentication%20error&type=error';
+                }
+            }
+
+            async logout() {
+                try {
+                    const response = await fetch('/api/admin/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        window.location.href = '/admin/login?message=Logged%20out%20successfully&type=success';
+                    } else {
+                        this.showMessage('Logout failed. Please try again.', 'error');
+                    }
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    this.showMessage('Logout failed. Please try again.', 'error');
+                }
+            }
+
+            async addTests() {
+                const email = document.getElementById('user-email').value.trim();
+                const username = document.getElementById('user-username').value.trim();
+                const tests = document.getElementById('test-count').value;
+
+                if (!email && !username) {
+                    this.showMessage('Please enter either email or username', 'error');
+                    return;
+                }
+
+                if (email && username) {
+                    this.showMessage('Please enter either email OR username, not both', 'error');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/admin/add-tests', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, username, tests: parseInt(tests) })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        this.showMessage(data.message, 'success');
+                        document.getElementById('add-tests-form').reset();
+                        this.loadUsers(); // Refresh the users list
+                    } else if (response.status === 401) {
+                        // Authentication failed, redirect to login
+                        window.location.href = '/admin/login?message=Session%20expired.%20Please%20log%20in%20again&type=warning';
+                    } else {
+                        this.showMessage(data.error || 'Failed to add tests', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error adding tests:', error);
+                    this.showMessage('Network error. Please try again.', 'error');
+                }
+            }
+
+            async loadUsers() {
+                const usersList = document.getElementById('users-list');
+                usersList.innerHTML = `
+                    <div class="loading" style="padding: 20px; text-align: center;">
+                        <div class="spinner"></div>
+                        <p>Loading users...</p>
+                    </div>
+                `;
+
+                try {
+                    const response = await fetch('/api/admin/users');
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        this.displayUsers(data.users);
+                    } else if (response.status === 401) {
+                        // Authentication failed, redirect to login
+                        window.location.href = '/admin/login?message=Session%20expired.%20Please%20log%20in%20again&type=warning';
+                    } else {
+                        usersList.innerHTML = `
+                            <div style="padding: 20px; text-align: center; color: #c62828;">
+                                <p>Failed to load users: ${data.error}</p>
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('Error loading users:', error);
+                    usersList.innerHTML = `
+                        <div style="padding: 20px; text-align: center; color: #c62828;">
+                            <p>Network error loading users</p>
+                        </div>
+                    `;
+                }
+            }
+
+            displayUsers(users) {
+                const usersList = document.getElementById('users-list');
+                
+                if (users.length === 0) {
+                    usersList.innerHTML = `
+                        <div style="padding: 20px; text-align: center; color: #666;">
+                            <p>No users found</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                usersList.innerHTML = users.map(user => {
+                    // Format dates
+                    const formatDate = (dateString) => {
+                        if (!dateString) return 'Not available';
+                        const date = new Date(dateString);
+                        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                    };
+
+                    // Get overall score
+                    const overallScore = user.assessmentScores?.overallScore || 0;
+                    const scoreDisplay = overallScore > 0 ? `${Math.round(overallScore)}/100` : 'No score';
+
+                    return `
+                        <div class="user-item">
+                            <div class="user-header">
+                                <div class="user-info">
+                                    <div class="user-email">${user.email}</div>
+                                    <div class="user-username">@${user.username}</div>
+                                </div>
+                                <div class="user-stats">
+                                    <div class="user-tests">${user.number_of_tests} available</div>
+                                    <div class="user-taken">${user.testsTaken || 0} taken</div>
+                                    <div class="user-score">${scoreDisplay}</div>
+                                </div>
+                            </div>
+                            <div class="user-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">Signup Date</div>
+                                    <div class="detail-value">${formatDate(user.createdAt)}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Last Login</div>
+                                    <div class="detail-value ${user.lastLoginAt ? '' : 'not-available'}">
+                                        ${formatDate(user.lastLoginAt)}
+                                    </div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Last Assessment</div>
+                                    <div class="detail-value ${user.lastAssessmentCompletedAt ? '' : 'not-available'}">
+                                        ${formatDate(user.lastAssessmentCompletedAt)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            showMessage(message, type) {
+                const messageContainer = document.getElementById('message-container');
+                const messageElement = document.getElementById('message');
+                
+                messageElement.textContent = message;
+                messageElement.className = `message ${type}`;
+                messageContainer.style.display = 'block';
+                
+                setTimeout(() => {
+                    messageContainer.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new AdminController();
+        });
+    </script>
+</body>
+</html>

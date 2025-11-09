@@ -1,0 +1,171 @@
+/* Reading Assessment Styles */
+
+/* Sentence Display */
+.sentence-display { 
+    background: transparent; 
+    border-radius: 0; 
+    padding: 0; 
+    margin: 0 0 16px 0; 
+    text-align: left; 
+    grid-column: 1;
+}
+
+.sentence-text { 
+    font-size: 1.2rem; 
+    color: #333; 
+    line-height: 1.6; 
+    max-width: 100%; 
+    margin: 0; 
+    overflow-wrap: anywhere; 
+    word-break: break-word; 
+}
+
+/* Recording Controls */
+.recording-controls {
+    text-align: center;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    grid-column: 2;
+}
+
+.record-btn {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+    color: #ffffff;
+    border: 0;
+    padding: 12px 22px;
+    font-size: 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+    margin: 0 10px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 22px rgba(22, 58, 70, 0.28);
+}
+
+.record-btn:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 10px 28px rgba(22, 58, 70, 0.35); 
+}
+
+.record-btn:active { 
+    transform: translateY(0); 
+    box-shadow: 0 6px 18px rgba(22, 58, 70, 0.28); 
+}
+
+.record-btn:focus-visible { 
+    outline: 3px solid rgba(31,78,95,0.35); 
+    outline-offset: 2px; 
+}
+
+.record-btn.stop-btn { 
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%); 
+}
+
+.record-btn.stop-btn:hover { 
+    box-shadow: 0 10px 28px rgba(22, 58, 70, 0.35); 
+}
+
+/* Stop button waves when recording */
+.record-btn.stop-btn.recording::before { 
+    content: none; 
+}
+
+.recording-status { 
+    margin-top: 15px; 
+    font-weight: 600; 
+    color: #344054; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+.recording-status.recording { 
+    color: var(--brand-primary); 
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Audio waveform (equalizer) for recording state */
+.audio-wave { 
+    display: inline-flex; 
+    align-items: flex-end; 
+    height: 1em; 
+    gap: 2px; 
+    margin-right: 8px; 
+}
+
+.audio-wave span { 
+    width: 3px; 
+    height: 20%; 
+    background: linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%); 
+    border-radius: 2px; 
+    animation: waveBar 1s ease-in-out infinite; 
+}
+
+.audio-wave span:nth-child(1) { animation-delay: 0s; }
+.audio-wave span:nth-child(2) { animation-delay: 0.1s; }
+.audio-wave span:nth-child(3) { animation-delay: 0.2s; }
+.audio-wave span:nth-child(4) { animation-delay: 0.3s; }
+.audio-wave span:nth-child(5) { animation-delay: 0.4s; }
+.audio-wave span:nth-child(6) { animation-delay: 0.5s; }
+.audio-wave span:nth-child(7) { animation-delay: 0.6s; }
+
+@keyframes waveBar {
+    0% { height: 20%; opacity: 0.7; }
+    25% { height: 80%; opacity: 1; }
+    50% { height: 40%; opacity: 0.85; }
+    75% { height: 100%; opacity: 1; }
+    100% { height: 20%; opacity: 0.7; }
+}
+
+/* Results Display */
+.results-display {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+}
+
+.results-display h3 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.score-display {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.score-label {
+    color: #666;
+    font-weight: normal;
+}
+
+.score-value {
+    color: var(--brand-primary);
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+.score-max {
+    color: #999;
+    font-size: 0.8em;
+}
+
+.feedback {
+    color: #666;
+    line-height: 1.6;
+    margin-top: 15px;
+}
